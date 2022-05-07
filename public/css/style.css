@@ -1,0 +1,173 @@
+:root{
+    --light-blue: #E0EDF6;
+    --dark-blue: #00B0FF;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--light-blue);
+    scroll-behavior: smooth;
+}
+
+/*---------------go Top arrow-------------------------*/
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 1000;
+    background-color: var(--dark-blue);
+    border-radius: 5rem;
+}
+
+/*--------------------navbar--------------------------*/
+.navbar{
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    border-radius: 0 0 2rem 2rem;
+    padding-bottom: 0;
+    margin: 0 1rem;
+}
+
+.navbar-brand{
+    font-weight: 700;
+    color: var(--dark-blue) !important;
+}
+
+.navbar-nav li{
+    text-transform: uppercase;
+    padding: 0 1.5rem 0;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.sign-up-btn{
+    background-color: var(--dark-blue) !important;
+    font-weight: 600;
+    border: none !important;
+    margin: 20% 0;
+}
+
+.sign-up-btn:hover{
+    background-color: #038ece !important;
+}
+
+.navbar-toggler.navbar-toggler {
+    border-radius: 50%;
+    padding: 0.3rem;
+    background-color: white;
+    border: none !important;
+    color: var(--dark-blue) !important;
+} 
+
+.navbar-nav li a{
+    position: relative;
+    padding: 1.5rem !important;
+}
+
+.navbar-nav li a:after{
+    position: absolute;
+    content:"";
+    background-color: var(--dark-blue);
+    height:0.2rem;
+    width: 0;
+    left: 0;
+    bottom: 0;
+    transition: all ease-in 0.3s;
+}
+
+.navbar-nav li a:hover:after{
+    width: 100%;
+}
+
+.navbar-nav li .active::after{
+    position: absolute;
+    content:"";
+    background-color: var(--dark-blue);
+    height:0.2rem;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    transition: all ease-in 0.3s;
+}
+
+.username{
+    font-weight: 600;
+    margin:  1rem  2rem 1rem;
+    display: inline-block;
+    text-align: center;
+}
+
+
+/*--------------------home--------------------------*/
+.home{
+    height: 100vh;
+}
+
+.home-content .heading{
+    font-weight: 700;
+    color: var(--dark-blue) !important;
+    font-size: 2rem;
+}
+
+.home-content .content{
+    font-weight: 400;
+    color: rgb(35, 34, 34);
+    font-size: 1.2rem;
+}
+
+#home i{
+    font-size: 3rem;
+}
+
+.arrow{
+    animation: MoveUpDown 2s linear infinite;
+    position: relative;
+    left: 0;
+    bottom: 0;
+}  
+
+
+/*------------------------signup form --------------------*/
+.back {
+    display: none;
+}
+
+#go-to-login, #go-to-signup{
+    text-decoration: none;
+}
+
+
+
+@media only screen and (max-width: 992px) {
+    .navbar-nav li a{
+        text-align: center;
+        width: fit-content;
+        margin: auto;
+    }
+    .sign-up-btn{
+        margin: 5% 0;
+    }
+    
+  }
+  
+  @media only screen and (max-width: 576px) {
+      html{
+          font-size: 75%;
+      }
+    .navbar{
+        margin: 0;
+    }
+    
+  }
+  
+  @keyframes MoveUpDown {
+    0%, 100% {
+      bottom: 0;
+    }
+    50% {
+      bottom: 1rem;
+    }
+  }
