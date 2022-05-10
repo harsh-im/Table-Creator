@@ -1,1 +1,47 @@
-<button type="button" class="btn btn-primary sign-up-btn" onclick="window.location.href='/logout'" style="margin: auto;">Logout</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header.ejs') %>
+
+</head>
+<body>
+    
+    <%- include('./partials/gotop.ejs') %>
+
+    <!----------------------------navbar------------------------------->
+    <%- include('./partials/navbar2.ejs') %>
+
+
+      <div class="d-flex dashboard" id="wrapper">
+        <!-- Sidebar-->
+        <div class="innerwrapper d-flex fixed-top" style="height:fit-content;">
+          <div id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light text-center">
+                <span class="username"><i class="fas fa-user fa-lg me-0 fa-fw"></i>  <p><%= user.name%></p></span>
+            </div>
+            <div class="list-group list-group-flush dashboard-list">
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/create"> <i class="fa-solid fa-calendar-plus"></i> Create Table</a>
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/view"> <i class="fa-solid fa-table-list"></i> View Table</a>
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/edit"> <i class="fa fa-solid fa-pen"></i> Edit Table</a>
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/delete"> <i class="fa fa-regular fa-trash"></i> Delete Table</a>
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/audithistory"> <i class="fa fa-solid fa-clock-rotate-left"></i> Audit History</a>
+            </div>
+          </div>
+          <button class="btn btn-primary shadow-none" id="sidebarToggle"><i class="fa fa-light fa-grip-lines-vertical"></i></button>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper" style="width: 100%;">
+            
+            <!-- Page content-->
+            <div class="container-fluid text-center p-5">
+                <img src="/img/undraw_apps_re_ienc.svg" style="width: 23rem;" class="mx-auto" alt="">
+                <br>
+                <h1 class="mt-4">Get Started</h1>
+            </div>
+        </div>
+    </div>
+
+    <%-include('./partials/footer.ejs') %>
+
+</body>
+</html>

@@ -30,3 +30,10 @@ $(window).scroll(function(){
        $('.back-to-top').fadeOut().hide();
    }
 });
+
+/*-------------sidebar-------------------------*/
+$(document).ready(function(){
+   $("#sidebarToggle").click(function(){
+     $(".innerwrapper").toggleClass("sb-sidenav-toggled");
+   });
+ });

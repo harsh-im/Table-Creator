@@ -152,6 +152,66 @@ body{
     }
     
   }
+
+  /*-----------------------dashboard------------------------*/
+.dashboard{
+    padding-top: 10rem;   
+}
+
+#sidebarToggle{
+    border-radius: 0 2rem 2rem 0;
+    background-color: var(--dark-blue);
+    padding: 0.5rem !important;
+    font-size: 2rem;
+    border: none;
+    outline: none !important;
+}
+
+.innerwrapper{
+    margin-left: 0;
+    transition: all ease-in 0.3s;
+    position: fixed;
+    left: 0;
+    top: 10rem;
+}
+
+.sb-sidenav-toggled{
+    margin-left: -13.5rem;
+}
+
+#page-content-wrapper{
+    min-height: 30rem;
+}
+
+.username{
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    width: 9rem;
+    word-wrap: break-word;
+}
+
+.dashboard-list .list-group-item{
+    white-space: nowrap;
+    width: 100%;
+    font-weight: 600;
+}
+
+.dashboard-list :nth-child(1):hover{
+    background-color: rgb(51, 174, 14);
+    color: white;
+}
+.dashboard-list :nth-child(2):hover{
+    background-color: rgba(77, 160, 243, 0.833);
+    color: white;
+}
+.dashboard-list :nth-child(3):hover{
+    background-color: rgba(245, 253, 6, 0.932);
+    color: black;
+}
+.dashboard-list :nth-child(4):hover{
+    background-color: rgba(255, 0, 0, 0.833);
+    color: white;
+}
   
   @media only screen and (max-width: 576px) {
       html{
