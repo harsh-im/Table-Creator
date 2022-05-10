@@ -3,9 +3,9 @@ const ejs = require('ejs');
 const app= express();
 const path = require("path");
 const bodyparser= require("body-parser");
-const flash = require('connect-flash');
 const db = require("./configs/DBconnection");
 const formRoutes = require("./routers/form");
+const createtableRoutes = require("./routers/createtable");
 
 //middlewares
 app.set('view engine', 'ejs');
@@ -13,7 +13,6 @@ app.set('view engine', 'ejs');
 //initialize app
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
-app.use(flash());
 
 //path
 const static_path= path.join(__dirname, "public");
@@ -33,6 +32,7 @@ app.get('/', function (req, res) {
 
 //routers
 app.use("/", formRoutes);
+app.use("/", createtableRoutes);
 
 //port
 const port = process.env.PORT || 4000;

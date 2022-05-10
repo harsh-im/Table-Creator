@@ -16,8 +16,8 @@ body{
 .back-to-top {
     position: fixed;
     display: none;
-    right: 45px;
-    bottom: 45px;
+    right: 2rem;
+    bottom: 2rem;
     z-index: 1000;
     background-color: var(--dark-blue);
     border-radius: 5rem;
@@ -212,6 +212,20 @@ body{
     background-color: rgba(255, 0, 0, 0.833);
     color: white;
 }
+
+/*--------------------create table------------------*/
+.form-for-create{
+    margin-top: 8rem;
+    text-align: center;
+    border: .1rem solid var(--dark-blue);
+    border-radius: 1rem;
+    background-color: white;
+}
+
+.table td, th{
+    text-align: center;   
+ }
+
   
   @media only screen and (max-width: 576px) {
       html{
