@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header.ejs') %>
+
+</head>
+<body>
+    
+    <%- include('./partials/gotop.ejs') %>
+
+    <!----------------------------navbar------------------------------->
+    <%- include('./partials/navbar2.ejs') %>
+
+    <!--------------------alert---------------------------------------->
+    <% if(typeof msg !='undefined' && msg!=""){ %>
+        <div class="container" style="margin-top: 8rem;" >
+          <div class="alert <%= color %> alert-dismissible fade show text-center m-5" role="alert">
+            <%= msg %>
+        </div>
+        </div>
+      <% } %>
+  
+
+    <form action="/delete" method="post" class="form-for-create container p-5" style="min-height: 50vh;">
+        <h3>Delete Table</h3>
+        <hr>
+        <% if(data.length != 0 ){ %>
+            <div class="container w-75 my-5 px-md-5 py-5 text-center" >
+              <div class="container">
+                  <% for(var i=0; i< data.length; i++){ %>
+                    <div class="form-check p-3 m-2 text-start">
+                        <input type="radio" name="table" value="<%= data[i].tableName %>" id="flexRadioDefault1">
+                        &nbsp;
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            <%= data[i].tableName %>
+                        </label>
+                    </div>
+                  <% } %> 
+              </div>
+            </div> 
+          <% } else{ %>
+              <h6>Nothing is here</h6>
+              <br>
+          <% } %>
+        <button type="submit" class="btn btn-outline-danger">Delete</button>
+    </form>
+
+    
+
+
+    <%-include('./partials/footer.ejs') %>
+
+</body>
+</html>

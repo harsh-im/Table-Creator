@@ -6,7 +6,8 @@ const bodyparser= require("body-parser");
 const db = require("./configs/DBconnection");
 const formRoutes = require("./routers/form");
 const createtableRoutes = require("./routers/createtable");
-const auditHistory = require("./routers/auditHistory");
+const auditHistoryRoutes = require("./routers/auditHistory");
+const deletetableRoutes = require("./routers/deletetable");
 
 
 //middlewares
@@ -52,7 +53,8 @@ app.get('/', function (req, res) {
 //routers
 app.use("/", formRoutes);
 app.use("/", createtableRoutes);
-app.use("/", auditHistory);
+app.use("/", auditHistoryRoutes);
+app.use("/", deletetableRoutes);
 
 //port
 const port = process.env.PORT || 4000;

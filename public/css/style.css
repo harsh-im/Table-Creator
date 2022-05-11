@@ -226,6 +226,11 @@ body{
     text-align: center;   
  }
 
+ /*------------------delete table-----------------------*/
+ .form-check{
+     border: 0.05rem solid rgb(148, 144, 144);
+     border-radius: 1rem;
+ }
   
   @media only screen and (max-width: 576px) {
       html{
