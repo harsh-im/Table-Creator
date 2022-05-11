@@ -17,14 +17,14 @@
         <div class="innerwrapper d-flex fixed-top" style="height:fit-content;">
           <div id="sidebar-wrapper">
             <div class="sidebar-heading border-bottom bg-light text-center">
-                <span class="username"><i class="fas fa-user fa-lg me-0 fa-fw"></i>  <p><%= user.name%></p></span>
+                <span class="username"><i class="fas fa-user fa-lg me-0 fa-fw"></i>  <p name="userEmail"><%= user.name%></p></span>
             </div>
             <div class="list-group list-group-flush dashboard-list">
                 <a class="list-group-item list-group-item-action  py-3 px-5" href="/create"> <i class="fa-solid fa-calendar-plus"></i> Create Table</a>
                 <a class="list-group-item list-group-item-action  py-3 px-5" href="/view"> <i class="fa-solid fa-table-list"></i> View Table</a>
                 <a class="list-group-item list-group-item-action  py-3 px-5" href="/edit"> <i class="fa fa-solid fa-pen"></i> Edit Table</a>
                 <a class="list-group-item list-group-item-action  py-3 px-5" href="/delete"> <i class="fa fa-regular fa-trash"></i> Delete Table</a>
-                <a class="list-group-item list-group-item-action  py-3 px-5" href="/audithistory"> <i class="fa fa-solid fa-clock-rotate-left"></i> Audit History</a>
+                <a class="list-group-item list-group-item-action  py-3 px-5" href="/history"> <i class="fa fa-solid fa-clock-rotate-left"></i> Audit History</a>
             </div>
           </div>
           <button class="btn btn-primary shadow-none" id="sidebarToggle"><i class="fa fa-light fa-grip-lines-vertical"></i></button>

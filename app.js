@@ -6,6 +6,8 @@ const bodyparser= require("body-parser");
 const db = require("./configs/DBconnection");
 const formRoutes = require("./routers/form");
 const createtableRoutes = require("./routers/createtable");
+const auditHistory = require("./routers/auditHistory");
+
 
 //middlewares
 app.set('view engine', 'ejs');
@@ -24,6 +26,23 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
+//user table creation
+db.query(`CREATE TABLE IF NOT EXISTS users (name VARCHAR(30) NOT NULL, email VARCHAR(30) PRIMARY KEY, password VARCHAR(225) NOT NULL);`, function (err, result) {
+    if (err)  throw err;
+    console.log("user Table created");
+});
+
+//table info table creation
+db.query(`CREATE TABLE IF NOT EXISTS tableInfo (sno INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(30), tableName VARCHAR(225) NOT NULL);`, function (err, result) {
+    if (err)  throw err;
+    console.log("table info Table created");
+});
+
+//audit history table creation
+db.query(`CREATE TABLE IF NOT EXISTS history  (sno INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(30), history VARCHAR(100) NOT NULL,  time DATETIME NOT NULL);`, function (err, result) {
+    if (err)  throw err;
+    console.log("audit history Table created");
+});
 
 //routing
 app.get('/', function (req, res) {
@@ -33,6 +52,7 @@ app.get('/', function (req, res) {
 //routers
 app.use("/", formRoutes);
 app.use("/", createtableRoutes);
+app.use("/", auditHistory);
 
 //port
 const port = process.env.PORT || 4000;

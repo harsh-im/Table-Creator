@@ -25,6 +25,8 @@ module.exports = function (passport) {
                 if (!bcrypt.compareSync(password, result[0].password))
                     return done(null, false, {message: 'Oops! Wrong password.'}); // create the loginMessage and save it to session as flashdata
 
+                req.session.user=result[0];
+                console.log(req.session.user)
                 // all is well, return successful user
                 return done(null, result[0]);
             });
@@ -34,8 +36,7 @@ module.exports = function (passport) {
     // passport session setup required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
     // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
-        console.log(user)
+    passport.serializeUser(function(user, done) {        
         done(null, user.email);
     });
 

@@ -11,19 +11,14 @@ const session = require("express-session");
 router.use(cookieParser('secret'));
 router.use(session({
     secret: 'secret',
-    resave: true,
-    maxAge: 3600000,
+    resave: false,
     saveUninitialized: true,
+    cookie:{maxAge: 3600000}
 }))
 
 router.use(passport.initialize());
 router.use(passport.session());
 
-//table creation
-db.query(`CREATE TABLE IF NOT EXISTS users (name VARCHAR(30) NOT NULL, email VARCHAR(30) PRIMARY KEY, password VARCHAR(225) NOT NULL);`, function (err, result) {
-    if (err)  throw err;
-    console.log("user Table created");
-});
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -88,6 +83,7 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', (req, res, next)=>{
+    console.log(req.session.id)
     passport.authenticate('local-login', {
         successRedirect : '/dashboard',
         failureRedirect : '/',

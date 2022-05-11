@@ -3,6 +3,7 @@ const db = require("../configs/DBconnection");
 
 
 router.get("/create", async(req, res)=>{
+    console.log(req.session.user)
     res.render('createtable');
 })
 
@@ -31,6 +32,12 @@ router.post("/create", async(req, res)=>{
     db.query(sqlQuery, function (err, result) {
         if (err) 
             res.render('createtable', {msg: err, color: "alert-danger"} );
+            
+        db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "'${req.body.tableName}' table is created", NOW());`,
+            function (err, result) {})
+        db.query(`INSERT INTO tableInfo (email, tableName) VALUES("${req.session.user.email}", "${req.body.tableName}");`,
+            function (err, result) {})
+
         res.render('createtable', {data: req.body, msg: `Table '${req.body.tableName}' successfully created`, color: "alert-success"} );
     });	
     
