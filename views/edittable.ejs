@@ -8,12 +8,12 @@
     
     <%- include('./partials/gotop.ejs') %>
 
-    <!----------------------------navbar------------------------------->
+    <!----------------------------navbar-------------------------------------->
     <%- include('./partials/navbar2.ejs') %>
 
 
     <div id="home" class="w-25"></div>
-    <!--------------------alert---------------------------------------->
+    <!----------------------------alert---------------------------------------->
     <% if(typeof msg !='undefined' && msg!=""){ %>
       <div class="container" style="margin-top: 8rem;" >
         <div class="alert <%= color %> alert-dismissible fade show text-center m-5" role="alert">
@@ -34,11 +34,8 @@
         
     </form>
 
-    
-    
-   
-
-    <%-include('./partials/footer.ejs') %>
+  <!----------------------------footer------------------------------->
+  <%-include('./partials/footer.ejs') %>
 
 </body>
 </html>

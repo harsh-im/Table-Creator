@@ -6,46 +6,47 @@
 </head>
 <body>
     
-    <%- include('./partials/gotop.ejs') %>
+  <%- include('./partials/gotop.ejs') %>
 
-    <!----------------------------navbar------------------------------->
-    <%- include('./partials/navbar2.ejs') %>
+  <!----------------------------navbar------------------------------->
+  <%- include('./partials/navbar2.ejs') %>
 
-    
-    <% if(typeof data !='undefined' ){ %>
-      <div class="container w-75 my-5 px-md-5 py-5 text-center" style="min-height: 80vh;">
-        <h3>History</h3>
-        <hr>
-        <br>
-        <table class="table bg-white">
-          <thead class="table-dark">
+  
+  <% if(typeof data !='undefined' ){ %>
+    <div class="container w-75 my-5 px-md-5 py-5 text-center" style="min-height: 80vh;">
+      <h3>History</h3>
+      <hr>
+      <br>
+      <table class="table bg-white">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">History</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i< data.length; i++){ %>
             <tr>
-              <th scope="col">History</th>
-              <th scope="col">Time</th>
+              <td> <%= data[i].history %> </td>
+              <td>
+                <strong>Date:</strong> <%= data[i].time.getDate() %>/<%= data[i].time.getMonth() %>/<%= data[i].time.getFullYear() %> 
+                <br>
+                <strong>Time:</strong> <%= data[i].time.getHours() %>:<%= data[i].time.getMinutes() %>:<%= data[i].time.getSeconds() %>
+                <% if(data[i].time.getHours() >=12){ %>
+                  PM
+                <% }else{ %>
+                  AM
+                <% }%>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <% for(var i=0; i< data.length; i++){ %>
-              <tr>
-                <td> <%= data[i].history %> </td>
-                <td>
-                  <strong>Date:</strong> <%= data[i].time.getDate() %>/<%= data[i].time.getMonth() %>/<%= data[i].time.getFullYear() %> 
-                  <br>
-                  <strong>Time:</strong> <%= data[i].time.getHours() %>:<%= data[i].time.getMinutes() %>:<%= data[i].time.getSeconds() %>
-                  <% if(data[i].time.getHours() >=12){ %>
-                    PM
-                  <% }else{ %>
-                    AM
-                  <% }%>
-                </td>
-              </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
-    <% } %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
 
-    <%-include('./partials/footer.ejs') %>
+  <!----------------------------footer------------------------------->
+  <%-include('./partials/footer.ejs') %>
 
 </body>
 </html>
