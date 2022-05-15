@@ -15,7 +15,7 @@ router.post("/create", async(req, res)=>{
     for(let i=0; i<data.colNumber; i++)
     {
         if(data[`dataType${i+1}`] == 'string')
-            data[`dataType${i+1}`] = 'varchar(255)'
+            data[`dataType${i+1}`] = 'text'
         if(data[`dataType${i+1}`] == 'number')
             data[`dataType${i+1}`] = 'int'
         if(data[`dataType${i+1}`] == 'email')

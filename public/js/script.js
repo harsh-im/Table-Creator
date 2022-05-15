@@ -73,3 +73,13 @@ $(document).ready(function(){
     });
  });
  
+
+ /*------------------edittable-------------------*/
+ 
+ $("#insert-btn").click(function(){
+    $("#edit-form").attr('action', '/insert');
+ })
+
+ $("#delete-btn").click(function(){
+   $("#edit-form").attr('action', '/delete');
+})

@@ -1,6 +1,7 @@
 :root{
     --light-blue: #E0EDF6;
     --dark-blue: #00B0FF;
+    --hover-blue: #038ece;
 }
 
 *{
@@ -51,7 +52,7 @@ body{
 }
 
 .sign-up-btn:hover{
-    background-color: #038ece !important;
+    background-color:var(--hover-blue) !important;
 }
 
 .navbar-toggler.navbar-toggler {
@@ -139,20 +140,6 @@ body{
     text-decoration: none;
 }
 
-
-
-@media only screen and (max-width: 992px) {
-    .navbar-nav li a{
-        text-align: center;
-        width: fit-content;
-        margin: auto;
-    }
-    .sign-up-btn{
-        margin: 5% 0;
-    }
-    
-  }
-
   /*-----------------------dashboard------------------------*/
 .dashboard{
     padding-top: 10rem;   
@@ -196,19 +183,19 @@ body{
     font-weight: 600;
 }
 
-.dashboard-list :nth-child(1):hover{
+.dashboard-list a:nth-child(1):hover{
     background-color: rgb(51, 174, 14);
     color: white;
 }
-.dashboard-list :nth-child(2):hover{
+.dashboard-list a:nth-child(2):hover{
     background-color: rgba(77, 160, 243, 0.833);
     color: white;
 }
-.dashboard-list :nth-child(3):hover{
+.dashboard-list a:nth-child(3):hover{
     background-color: rgba(245, 253, 6, 0.932);
     color: black;
 }
-.dashboard-list :nth-child(4):hover{
+.dashboard-list a:nth-child(4):hover{
     background-color: rgba(255, 0, 0, 0.833);
     color: white;
 }
@@ -231,6 +218,25 @@ body{
      border: 0.05rem solid rgb(148, 144, 144);
      border-radius: 1rem;
  }
+
+ /*------------------insert data-----------------------*/
+ #insert-table td{
+    border-bottom: none !important;
+ }
+
+
+  
+@media only screen and (max-width: 992px) {
+    .navbar-nav li a{
+        text-align: center;
+        width: fit-content;
+        margin: auto;
+    }
+    .sign-up-btn{
+        margin: 5% 0;
+    }
+    
+  }
   
   @media only screen and (max-width: 576px) {
       html{
@@ -242,6 +248,7 @@ body{
     
   }
   
+
   @keyframes MoveUpDown {
     0%, 100% {
       bottom: 0;

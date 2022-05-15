@@ -8,6 +8,7 @@ const formRoutes = require("./routers/form");
 const createtableRoutes = require("./routers/createtable");
 const auditHistoryRoutes = require("./routers/auditHistory");
 const deletetableRoutes = require("./routers/deletetable");
+const edittableRoutes = require("./routers/edittable");
 
 
 //middlewares
@@ -55,6 +56,7 @@ app.use("/", formRoutes);
 app.use("/", createtableRoutes);
 app.use("/", auditHistoryRoutes);
 app.use("/", deletetableRoutes);
+app.use("/", edittableRoutes);
 
 //port
 const port = process.env.PORT || 4000;

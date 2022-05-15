@@ -12,7 +12,6 @@ router.get("/delete", async(req, res)=>{
 })
 
 router.post("/delete", async(req, res)=>{
-    console.log(req.body)
 
     if(typeof req.body.table == "undefined")
     {
@@ -32,10 +31,13 @@ router.post("/delete", async(req, res)=>{
                     if (err) 
                         return res.render('deletetable', {msg: err, color: "alert-danger"} );
                 });	
+                
+                db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "'${req.body.table}' table is deleted", NOW());`,
+                function (err, result) {})
 
                 db.query(`SELECT tableName FROM tableInfo WHERE email = "${req.session.user.email}";`, function (err, result) {
                     if (err) 
-                        return res.render('deletetable', {msg: err});
+                        return res.render('deletetable', {msg: err, color: "alert-danger"});
                     return res.render('deletetable', {data: result, msg: "Table successfully deleted.", color: "alert-success"} );
                 });	
             }

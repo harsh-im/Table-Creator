@@ -18,12 +18,12 @@ module.exports = function (passport) {
                     return done(err);
                 if (!result.length) {
                     console.log('No user found.');
-                    return done(null, false, {message: 'No user found.'}); 
+                    return done(null, false); 
                 }
 
                 // if the user is found but the password is wrong
                 if (!bcrypt.compareSync(password, result[0].password))
-                    return done(null, false, {message: 'Oops! Wrong password.'}); // create the loginMessage and save it to session as flashdata
+                    return done(null, false); // create the loginMessage and save it to session as flashdata
 
                 req.session.user=result[0];
                 console.log(req.session.user)

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header.ejs') %>
+
+</head>
+<body">
+    
+    <%- include('./partials/gotop.ejs') %>
+
+    <!----------------------------------navbar------------------------------------------>
+    <%- include('./partials/navbar2.ejs') %>
+
+
+    <div id="home" class="w-25"></div>
+    <!----------------------------------alert------------------------------------------->
+    <% if(typeof msg !='undefined'){ %>
+      <div class="container" style="margin-top: 8rem;" >
+        <div class="alert <%= color %> alert-dismissible fade show text-center m-5 fw-bolder" role="alert">
+          <%= msg %>
+      </div>
+      </div>
+    <% } %>
+
+
+    <form action="/insert" method="post" class="form-for-create container p-5" style="margin-bottom: 40vh;">
+      <h3>Insert Data</h3>
+      <hr>
+        
+      <div class="row g-3 align-items-center justify-content-center my-3" >
+        <div class="col-lg-6">
+          <table class="table my-5" id="insert-table">
+            <tbody>
+              <tr>
+                <td><label for="tableName" class="col-form-label" ><strong>Table Name</strong> </label></td>
+                <td>
+                  <select class="form-select" aria-label="Default select example" name="table" onchange="this.form.submit()" required>
+                    <option value="" disabled="disabled" selected="true">Select Table</option>
+                    <% if(tableNames.length != 0 ){ %>
+                        <% for(var i=0; i< tableNames.length; i++){ %>
+                            <option value="<%= tableNames[i].tableName %>" <%= typeof selected_table !='undefined' && selected_table == tableNames[i].tableName ? 'selected' : '' %>>
+                              <%= tableNames[i].tableName %>
+                            </option>
+                        <% } %> 
+                    <% } %>
+                  </select>
+                </td>
+              </tr>
+              
+              <% if(typeof data != 'undefined'){ %>
+                <% for(let i=0; i<data.length; i++){ %>
+                  <% if(data[i].data_type == "int") { %>
+                    <tr>
+                      <td><label for="for-number-col" class="col-form-label" ><%= data[i].column_name %> [Number] </label></td>
+                      <% if(data[i].column_name == key_col) { %>
+                        <td>
+                          <input type="number" id="for-number-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          *Primary Key
+                        </td>
+                      <% } else{%>
+                        <td><input type="number" id="for-number-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                      <% } %>
+                    </tr>
+                  <% } else if(data[i].data_type == "text"){ %>
+                    <tr>
+                      <td><label for="for-text-col" class="col-form-label" ><%= data[i].column_name %> [Text] </label></td>
+                      <% if(data[i].column_name == key_col) {%>
+                        <td>
+                          <input type="text" id="for-text-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          *Primary Key
+                        </td>
+                      <% } else{%>
+                        <td><input type="text" id="for-text-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                      <% } %>
+                    </tr>
+                  <% } else if(data[i].data_type == "datetime"){ %>
+                    <tr>
+                      <td><label for="for-date-col" class="col-form-label" ><%= data[i].column_name %> [DateTime]</label></td>
+                      <% if(data[i].column_name == key_col) {%>
+                        <td>
+                          <input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          *Primary Key
+                        </td>
+                      <% } else{%>
+                        <td><input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                      <% } %>
+                    </tr>
+                  <% } else if(data[i].data_type == "varchar"){ %>
+                    <tr>
+                      <td><label for="for-email-col" class="col-form-label" ><%= data[i].column_name %> [Email] </label></td>
+                      <% if(data[i].column_name == key_col) {%>
+                        <td>
+                          <input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          *Primary Key
+                        </td>
+                      <% } else{%>
+                        <td><input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                      <% } %>
+                    </tr>
+                  <% } else if(data[i].data_type == "tinyint"){ %>
+                    <tr>
+                      <td><label for="for-boolean" class="col-form-label" ><%= data[i].column_name %> [Boolean] </label></td>
+                      <% if(data[i].column_name == key_col) {%>
+                        <td>
+                          <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" required>
+                            <option value="" disabled="disabled" selected="true">-- Select --</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                          </select>
+                          *Primary Key
+                        </td>
+                      <% } else{%>
+                        <td>
+                          <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" >
+                            <option value="" disabled="disabled" selected="true">-- Select --</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                          </select>
+                        </td>
+                      <% } %>
+                    </tr>
+                  <% } %>
+                <% } %>
+                <tr colspan="2">
+                  <td>
+                    <button class="btn btn-success shadow-none" id="insert-btn" type="submit"><i class="fa-solid fa-plus"></i></button>
+                  </td>  
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div> 
+    </form>
+                  
+    <!--------------------------------footer------------------------------------------->
+    <%-include('./partials/footer.ejs') %>
+
+</body>
+</html>
