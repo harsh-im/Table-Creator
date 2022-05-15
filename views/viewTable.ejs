@@ -68,7 +68,7 @@
                             </div>
                             <% if(typeof datatype != 'undefined') { %>
                              <div class="col-auto">
-                                <% if(datatype === 'varchar'){ %>
+                                <% if(datatype === 'text'){ %>
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
                                         <option value="=">Is Equal</option>
@@ -93,14 +93,14 @@
                                         <option value="IS NOT NULL">Not NULL</option>
                                         
                                     </select>  
-                                <% } else if(datatype === 'boolean') { %> 
+                                <% } else if(datatype === 'tinyint') { %> 
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
                                         <option value="TRUE">TRUE</option>
                                         <option value="FALSE">FALSE</option>
                                         
                                     </select>
-                                <% } else if(datatype === 'email') { %> 
+                                <% } else if(datatype === 'varchar') { %> 
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
                                         <option value="=">Is Equal</option>
@@ -113,7 +113,7 @@
                                         <option value="IS NOT NULL">Not NULL</option>
                                         
                                     </select>
-                                <% } else if(datatype === 'date time') { %> 
+                                <% } else if(datatype === 'datetime') { %> 
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
                                         <option value="<">Before</option>
@@ -129,13 +129,13 @@
                              <% if(typeof datatype != 'undefined') { %>
                                 <div class="col-auto" id=input-div>
                                    <% if(datatype === 'varchar'){ %>
-                                            <input type="text" name="value" id="column_name" class="form-control col" >  
+                                            <input type="email" name="value" id="column_name" class="form-control col" >  
                                    <% } else if(datatype === 'int') { %> 
                                             <input type="number" name="value" id="column_name" class="form-control col" >
-                                   <% } else if(datatype === 'email') { %> 
+                                   <% } else if(datatype === 'text') { %> 
                                             <input type="text" name="value" id="column_name" class="form-control col" >
-                                   <% } else if(datatype === 'date time') { %> 
-                                            <input type="date" name="value" id="column_name" class="form-control col" >
+                                   <% } else if(datatype === 'datetime') { %> 
+                                            <input type="datetime-local" name="value" id="column_name" class="form-control col" >
                                    <% } %>
                                 </div>  
                                 
@@ -156,7 +156,7 @@
 
      <div class="container w-75 my-3 px-md-5 py-5 text-center">
         <% if(typeof tables !='undefined' && tables.length !== 0 ){ %>
-        <table class="table bg-white">
+        <table class="table bg-white" style="margin-bottom: 40vh;">
           <thead class="table-dark">
             <tr>
             <% for(var i=0; i< column.length; i++){ %>
@@ -175,7 +175,7 @@
           </tbody>
         </table>
         <% } else { %>
-                <h2 class="text-dark">No data available</h2>
+                <h2 class="text-dark" style="margin-bottom: 40vh;">No data available</h2>
           <% } %>
       </div>
    

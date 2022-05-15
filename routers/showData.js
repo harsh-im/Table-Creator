@@ -65,12 +65,12 @@ router.post("/view", async (req, res) => {
   if (data.column !== undefined) {
     let dt;
     db.query(
-      `select column_name,data_type from information_schema.columns where table_schema = 'tablecreator' and table_name = '${data.tableName} '`,
+      `SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${data.tableName}";`,
       function (err, dataType) {
         if (err) res.render("dashboard");
         dataType.forEach((row) => {
-          if (row.COLUMN_NAME == data.column) {
-            dt = row.DATA_TYPE;
+          if (row.column_name === data.column) {
+            dt = row.data_type;
             return;
           }
         });

@@ -88,7 +88,7 @@ $(document).ready(function(){
  $(document).ready(function(){
     $("#filter").on("change",function(){
        let value = $("#filter").val();
-       if(value === "IS NULL" || value === "IS NOT NULL" ){
+       if(value === "IS NULL" || value === "IS NOT NULL" || value === "TRUE" || value === "FALSE"){
           $("#column_name").remove();
        }else{
           if($("#column_name").length == 0){
