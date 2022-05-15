@@ -84,6 +84,21 @@ $(document).ready(function(){
    $("#edit-form").attr('action', '/deletedata');
 })
 
+
+ $(document).ready(function(){
+    $("#filter").on("change",function(){
+       let value = $("#filter").val();
+       if(value === "IS NULL" || value === "IS NOT NULL" ){
+          $("#column_name").remove();
+       }else{
+          if($("#column_name").length == 0){
+             $("#input-div").append('<input id="column_name" type="text" name="value" class="form-control col" >')
+          }
+       }
+
+    })
+ })
+
 /*---------------insert data------------------*/
 $('#for-date-col').dateptimepicker({
    format: 'YYYY/MM/DD HH:mm:ss'
