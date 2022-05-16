@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header.ejs') %>
+
+</head>
+<body">
+    
+    <%- include('./partials/gotop.ejs') %>
+
+    <!----------------------------------navbar------------------------------------------>
+    <%- include('./partials/navbar2.ejs') %>
+
+
+    <div id="home" class="w-25"></div>
+    <!----------------------------------alert------------------------------------------->
+    <% if(typeof msg !='undefined'){ %>
+      <div class="container" style="margin-top: 8rem;" >
+        <div class="alert alert-success alert-dismissible fade show text-center m-5 fw-bolder" role="alert">
+          <%= msg %>
+      </div>
+      </div>
+    <% } %>
+
+
+    <form action="/deletedata" method="post" class="form-for-create container p-5" style="margin-bottom: 40vh;">
+      <h3>Delete Data</h3>
+      <hr>
+        
+      <div class="row g-3 align-items-center justify-content-center my-3" >
+        <div class="col-lg-6">
+            <div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td style="border-bottom: none !important;">
+                                <label for="tableName" class="col-form-label" ><strong>Table Name</strong> </label></td>
+                            </td>
+                            <td>
+                                <select class="form-select" aria-label="Default select example" name="table" onchange="this.form.submit()" required>
+                                    <option value="" disabled="disabled" selected="true">Select Table</option>
+                                    <% if(tableNames.length != 0 ){ %>
+                                        <% for(var i=0; i< tableNames.length; i++){ %>
+                                            <option value="<%= tableNames[i].tableName %>" <%= typeof selected_table !='undefined' && selected_table == tableNames[i].tableName ? 'selected' : '' %>>
+                                            <%= tableNames[i].tableName %>
+                                            </option>
+                                        <% } %> 
+                                    <% } %>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+                
+            <table class="table my-5" id="delete-table">
+                <thead class="table-light">
+                    <% if(typeof col_data != 'undefined'){ %>
+                        <tr>
+                            <% Object.keys(col_data).forEach(key =>{ %>
+                                <th scope="col"><%= key%></th>
+                            <% }) %>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    <% } %>
+                </thead>
+                <tbody>
+                    <% if(typeof data != 'undefined'){ %>
+                        <tr>
+                            <% for(let i=0; i<data.length; i++){ %>
+                                <tr>
+                                    <% Object.keys(data[i]).forEach(key=>{ %>
+                                        <td> 
+                                            <%if( data[i][key] instanceof Date) {%>
+                                                <%= data[i][key].toLocaleString('en-US')%>
+                                            <%} else{ %>
+                                                <%= data[i][key]%>
+                                            <% } %>
+                                        </td>
+                                    <%})%>
+                                    <td>
+                                        <% Object.keys(data[i]).forEach(key=>{ %>
+                                            <% if(key_col===key){ %>
+                                                <%if( data[i][key] instanceof Date) {%>
+                                                    <button id="selection" name="delete" value="<%= new Date(data[i][key].getTime() - (data[i][key].getTimezoneOffset()* 60000)).toISOString().slice(0, 19).replace('T', ' ')%>" class="btn btn-danger shadow-none"  type="submit"><i class="fa-solid fa-minus"></i> </button>
+                                                <%} else{ %>
+                                                    <button id="selection" name="delete" value="<%= data[i][key]%>" class="btn btn-danger shadow-none"  type="submit"><i class="fa-solid fa-minus"></i> </button>
+                                                <% } %>
+                                            <% } %>
+                                        <%})%>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </form>          
+    <!--------------------------------footer------------------------------------------->
+    <%-include('./partials/footer.ejs') %>
+
+</body>
+</html>
+

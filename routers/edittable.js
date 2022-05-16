@@ -81,5 +81,39 @@ router.post("/insertdata", async(req, res)=>{
     })
 
 
+router.get("/deletedata", async(req, res)=>{
+    getTables(req.session.user.email, (allTables)=>{
+        res.render('deleteData', {tableNames: allTables} );
+    })	    
+})
+
+router.post("/deletedata", async(req, res)=>{
+    getTables(req.session.user.email, (allTables)=>{
+        db.query(`SELECT * FROM ${req.body.table};`, function (err, data) {
+            db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
+                
+                if(typeof req.body.delete!='undefined')
+                    {
+                        console.log(`DELETE FROM ${req.body.table} WHERE ${keyData[0].Column_name} = "${req.body.delete}";`)
+
+                        console.log(req.body)
+                        db.query(`DELETE FROM ${req.body.table} WHERE ${keyData[0].Column_name} = "${req.body.delete}";`, function (err, d) {
+
+                            db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "A row is deleted in '${req.body.table}' table", NOW());`,
+                                function (err, result) {})
+                            
+                            db.query(`SELECT * FROM ${req.body.table};`, function (err, data2){
+                                res.render('deleteData', {data: data2, tableNames: allTables, col_data: data[0], selected_table: req.body.table, key_col: keyData[0].Column_name, msg:'Row deleted Successfully!'} );
+                            })
+                        })
+                    }
+                    else{
+                        res.render('deleteData', {tableNames: allTables, data:data, col_data:data[0], key_col: keyData[0].Column_name, selected_table: req.body.table});
+                    }
+            })
+        })  
+    })  
+})
+
 
 module.exports = router;
