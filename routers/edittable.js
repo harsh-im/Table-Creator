@@ -2,7 +2,7 @@ const router =  require("express").Router();
 const db = require("../configs/DBconnection");
 
 
-getStrings = (body)=> {
+const getStrings = (body, colData)=> {
     let col="", val="", empty="";
     for (key in body){
         if(key !=="table"){
@@ -24,34 +24,37 @@ getStrings = (body)=> {
     return{ col, val, empty}
 }
 
+const getTables = async(email, processResult) => {
+    db.query(`SELECT tableName FROM tableInfo WHERE email = "${email}";`, function (err, allTables) {
+        if (err) 
+            res.render('dashboard');
+            processResult(allTables);
+    });	
+}
+
+
+
 
 router.get("/edit", async(req, res)=>{
     res.render('edittable');
-    
 })
 
 
 router.get("/insertdata", async(req, res)=>{
-    db.query(`SELECT tableName FROM tableInfo WHERE email = "${req.session.user.email}";`, function (err, result) {
-        if (err) 
-            console.log(err)
-        res.render('insertData', {tableNames: result} );
-    });	    
+    getTables(req.session.user.email, (allTables)=>{
+        res.render('insertData', {tableNames: allTables} );
+    })	    
 })
 
 
 
 router.post("/insertdata", async(req, res)=>{
     db.query(`SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, colData) {
-        if (err) 
-            console.log(err);
+        if (err) console.log(err);
         db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
 
-            db.query(`SELECT tableName FROM tableInfo WHERE email = "${req.session.user.email}";`, function (err, allTables) {
-                if (err) 
-                    console.log(err);
-                
-                    let {col, val, empty} = getStrings(req.body);
+            getTables(req.session.user.email, (allTables)=>{
+                let {col, val, empty} = getStrings(req.body, colData);
                     
                     if(empty!==''){
                          
