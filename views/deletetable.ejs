@@ -24,7 +24,7 @@
   <form action="/delete" method="post" class="form-for-create container p-5" style="min-height: 50vh;">
     <h3>Delete Table</h3>
     <hr>
-    <% if(data.length != 0 ){ %>
+    <% if(typeof data != 'undefined' && data.length != 0 ){ %>
       <div class="container w-75 my-5 px-md-5 py-5 text-center" >
         <div class="container">
             <% for(var i=0; i< data.length; i++){ %>

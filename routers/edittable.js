@@ -4,25 +4,28 @@ const db = require("../configs/DBconnection");
 
 const getStrings = (body, colData)=> {
     let col="", val="", empty="";
-    for (key in body){
-        if(key !=="table"){
-            col+=key +",";
-            if(body[key]==='')
-                val+= `NULL,`;
-            else if(isNaN(body[key])){
-                empty="NO"
-                val += `'${body[key]}' ,`;
-            }
-            else{
-                empty="NO"
-                val+= body[key] + " ,";
-            }
+    let data={...body};
+    delete data.table;
+    for(let i=0; i<colData.length && Object.keys(data).length>0; i++){
+        col += colData[i].column_name +",";
+        if(data[`${colData[i].column_name}`] ==''){
+            val+= `NULL,`;
+        }
+        else if(colData[i].data_type ==='int' || colData[i].data_type === 'tinyint'){
+            empty="NO"
+            val+= data[`${colData[i].column_name}`] + " ,";
+        }
+        else{
+            empty="NO"
+            val += `'${data[`${colData[i].column_name}`]}' ,`;
         }
     }
     col = col.substring(0, col.length -1);
     val = val.substring(0, val.length -1);
+    console.log(col, val)
     return{ col, val, empty}
 }
+
 
 const getTables = async(email, processResult) => {
     db.query(`SELECT tableName FROM tableInfo WHERE email = "${email}";`, function (err, allTables) {
@@ -51,6 +54,7 @@ router.get("/insertdata", async(req, res)=>{
 router.post("/insertdata", async(req, res)=>{
     db.query(`SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, colData) {
         if (err) console.log(err);
+        
         db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
 
             getTables(req.session.user.email, (allTables)=>{
@@ -75,6 +79,7 @@ router.post("/insertdata", async(req, res)=>{
             })
         });	  
     })
+
 
 
 module.exports = router;

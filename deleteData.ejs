@@ -1,0 +1,59 @@
+
+
+
+
+router.post("/deletedata", async(req, res)=>{
+    console.log(req.body)
+
+    db.query(`SELECT column_name FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, result) {
+        if (err) 
+            console.log(err)
+
+        db.query(`SELECT tableName FROM tableInfo WHERE email = "${req.session.user.email}";`, function (err, tables) {
+            if (err) 
+                console.log(err)
+
+            db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
+
+                db.query(`SELECT * FROM ${req.body.table};`, function (err, data) {
+                    if (err) 
+                        console.log(err)
+                    for(let i=0; i<data.length; i++){
+                        Object.keys(data[i]).forEach(key=>{
+                            if(data[i][key]==0)
+                                data[i][key]='True';
+                            else if(data[i][key]==1)
+                                data[i][key]='False';
+                                else if(`${data[i][key]}`.includes('GMT')){
+                                   let dt= data[i][key]
+                                    data[i][key] = `${dt.getDate()}/${dt.getMonth()}/${dt.getFullYear()} ${dt.getHours()}:${dt.getMinutes()}:${dt.getSeconds()} `
+                                    if(dt.getHours() >=12){
+                                      data[i][key] += 'PM';
+                                    }else{
+                                      data[i][key] += 'AM';
+                                    }
+                                }
+                        })
+                    }
+
+                    if(typeof req.body.delete!='undefined')
+                    {
+                        
+                        db.query(`DELETE FROM ${req.body.table} WHERE ${keyData[0].Column_name} = "${req.body.delete}";`, function (err, d) {
+
+                            db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "A row is deleted in '${req.body.table}' table", NOW());`,
+                                function (err, result) {})
+                            
+                            db.query(`SELECT * FROM ${req.body.table};`, function (err, data){
+                                res.render('deleteData', {data: data, tableNames: tables, col_data: result, selected_table: req.body.table, key_col: keyData[0].Column_name, msg:'Row deleted Successfully!'} );
+                            })
+                        })
+                    }
+                    else{
+                        res.render('deleteData', {data: data, tableNames: tables, col_data: result, selected_table: req.body.table, key_col: keyData[0].Column_name} );
+                    }
+                }) 
+            })           	 
+        });	 
+    })
+})
