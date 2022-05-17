@@ -60,6 +60,11 @@ app.use("/", deletetableRoutes);
 app.use("/", edittableRoutes);
 app.use("/",showDataRoutes);
 
+app.use((req, res) => {
+    res.status(400).render('error');
+  });
+  
+
 //port
 const port = process.env.PORT || 4000;
 app.listen(port, ()=>{ console.log(`listening at port: ${port}`); })

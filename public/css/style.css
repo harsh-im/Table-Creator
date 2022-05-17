@@ -224,7 +224,20 @@ body{
     border-bottom: none !important;
  }
 
+ /*--------------error page---------------------------*/
+ #error-div{
+    height: 100vh;
+ }
 
+ #error-div img{
+    width: 40vw;
+ }
+
+ #error-div p{
+    margin-top:3rem; 
+    font-weight: 600; 
+    font-size: 3rem;
+ }
   
 @media only screen and (max-width: 992px) {
     .navbar-nav li a{
