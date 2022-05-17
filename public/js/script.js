@@ -99,6 +99,22 @@ $(document).ready(function(){
     })
  })
 
+ $(document).ready(function(){
+   $("#date-filter").on("change",function(){
+      let value = $("#date-filter").val();
+      if(value === "IS NULL" || value === "IS NOT NULL"){
+         $("#column_name").remove();
+      }else if(value === "MORE THAN N DAYS AGO" || value === "EXACTLY THAN N DAYS AGO" || value === "LESS THAN N DAYS AGO"){
+         $("#column_name").remove();
+         $("#input-div").append('<input id="column_name" type="number" min="0" step="1" name="value" class="form-control col" >')
+      }else{
+         $("#column_name").remove();
+         $("#input-div").append('<input type="datetime-local" name="value" id="column_name" class="form-control col" >')
+      }
+
+   })
+})
+
 /*---------------insert data------------------*/
 $('#for-date-col').dateptimepicker({
    format: 'YYYY/MM/DD HH:mm:ss'

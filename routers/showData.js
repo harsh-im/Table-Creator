@@ -5,11 +5,15 @@ const db = require("../configs/DBconnection");
 const getQuery = (table, column, filter, value) => {
   let sqlQuery = `SELECT * FROM ${table} WHERE ${column} `;
 
-  if (filter === "=") {
+  if (filter === "=s") {
     sqlQuery += `= "${value}"`;
-  } else if (filter === "!=") {
+  } else if (filter === "=") {
+    sqlQuery += `= ${value}`;
+  }else if (filter === "!=") {
+    sqlQuery += `!= ${value}`;
+  } else if (filter === "!=s") {
     sqlQuery += `!= "${value}"`;
-  } else if (filter === "LIKE s") {
+  }else if (filter === "LIKE s") {
     sqlQuery += `LIKE '${value}%'`;
   } else if (filter === "LIKE e") {
     sqlQuery += `LIKE '%${value}'`;
@@ -25,11 +29,22 @@ const getQuery = (table, column, filter, value) => {
     sqlQuery += `> ${value}`;
   } else if (filter === "<") {
     sqlQuery += `< ${value}`;
-  } else if (filter === "TRUE") {
+  } else if (filter === ">s") {
+    sqlQuery += `> '${value}'`;
+  } else if (filter === "<s") {
+    sqlQuery += `< '${value}'`;
+  }else if (filter === "TRUE") {
     sqlQuery += `= 1`;
   } else if (filter === "FALSE") {
     sqlQuery += `= 0`;
+  }else if (filter === "MORE THAN N DAYS AGO") {
+    sqlQuery += `< NOW() - INTERVAL ${value} DAY`;
+  }else if (filter === "EXACTLY THAN N DAYS AGO") {
+    sqlQuery += `= NOW() - INTERVAL ${value} DAY`;
+  }else if (filter === "LESS THAN N DAYS AGO") {
+    sqlQuery += `> NOW() - INTERVAL ${value} DAY`;
   }
+  console.log(sqlQuery)
   return sqlQuery;
 };
 
@@ -77,7 +92,7 @@ router.post("/view", async (req, res) => {
       }
     );
     let query = `SELECT * FROM ${data.tableName}`;
-    if (data.filter != undefined && data.value != "") {
+    if (data.filter != undefined && typeof data.value != "undefined" && data.value != "") {
       query = getQuery(data.tableName, data.column, data.filter, data.value);
     }
 

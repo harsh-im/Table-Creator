@@ -35,7 +35,7 @@
                 <select class="form-select" aria-label="Default select example"  name="tableName"  required>
                     <option value="" selected disabled>Select Table</option>
                     <% for(var i=0; i< data.length; i++){ %>
-                    <option value="<%= data[i].tableName %>"><%= data[i].tableName %></option>
+                    <option value="<%= data[i].tableName %>" <%= typeof tablename !='undefined' && tablename == data[i].tableName ? 'selected' : '' %>><%= data[i].tableName %></option>
                     <%} %>
                   </select>
             </div>
@@ -71,8 +71,8 @@
                                 <% if(datatype === 'text'){ %>
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
-                                        <option value="=">Is Equal</option>
-                                        <option value="!=">Is Not Equal</option>
+                                        <option value="=s">Is Equal</option>
+                                        <option value="!=s">Is Not Equal</option>
                                         <option value="LIKE s">Starts with</option>
                                         <option value="LIKE e">Ends with</option>
                                         <option value="LIKE c">Contains</option>
@@ -96,6 +96,7 @@
                                 <% } else if(datatype === 'tinyint') { %> 
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
+                                        <option value="">Select</option>
                                         <option value="TRUE">TRUE</option>
                                         <option value="FALSE">FALSE</option>
                                         
@@ -103,8 +104,8 @@
                                 <% } else if(datatype === 'varchar') { %> 
                                     <select name="filter" id="filter" class="col form-select mx-2">
                                 
-                                        <option value="=">Is Equal</option>
-                                        <option value="!=">Is Not Equal</option>
+                                        <option value="=s">Is Equal</option>
+                                        <option value="!=s">Is Not Equal</option>
                                         <option value="LIKE s">Starts with</option>
                                         <option value="LIKE e">Ends with</option>
                                         <option value="LIKE c">Contains</option>
@@ -114,11 +115,14 @@
                                         
                                     </select>
                                 <% } else if(datatype === 'datetime') { %> 
-                                    <select name="filter" id="filter" class="col form-select mx-2">
+                                    <select name="filter" id="date-filter" class="col form-select mx-2">
                                 
-                                        <option value="<">Before</option>
-                                        <option value="=">ON</option>
-                                        <option value=">">After</option>
+                                        <option value="MORE THAN N DAYS AGO">More Than N Days Ago</option>
+                                        <option value="EXACTLY THAN N DAYS AGO">Exactly Than N Days Ago</option>
+                                        <option value="LESS THAN N DAYS AGO">Less Than N Days Ago</option>
+                                        <option value="<s">Before</option>
+                                        <option value="=s">ON</option>
+                                        <option value=">s">After</option>
                                         <option value="IS NULL">NULL</option>
                                         <option value="IS NOT NULL">Not NULL</option>
                                         
@@ -129,13 +133,13 @@
                              <% if(typeof datatype != 'undefined') { %>
                                 <div class="col-auto" id=input-div>
                                    <% if(datatype === 'varchar'){ %>
-                                            <input type="email" name="value" id="column_name" class="form-control col" >  
+                                            <input type="text" name="value" id="column_name" class="form-control col" >  
                                    <% } else if(datatype === 'int') { %> 
                                             <input type="number" name="value" id="column_name" class="form-control col" >
                                    <% } else if(datatype === 'text') { %> 
                                             <input type="text" name="value" id="column_name" class="form-control col" >
                                    <% } else if(datatype === 'datetime') { %> 
-                                            <input type="datetime-local" name="value" id="column_name" class="form-control col" >
+                                        <input id="column_name" type="number" min="0" step="1" name="value" class="form-control col" >
                                    <% } %>
                                 </div>  
                                 
@@ -168,7 +172,13 @@
             <% tables.forEach(function(table){ %>
                 <tr>
                     <% for(let key in table){ %>
-                        <td><%= table[key] %></td>
+                        <td>
+                            <%if( table[key] instanceof Date) {%>
+                                <%= table[key].toLocaleString('en-US')%>
+                            <%} else{ %>
+                                <%= table[key] %>
+                            <% } %>
+                        </td>
                     <% } %>
                 </tr>
              <% }) %> 
