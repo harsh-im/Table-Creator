@@ -29,9 +29,9 @@
         
         <div class="row g-3 align-items-center my-3">
             <div class="col-auto">
-              <label for="tableName" class="col-form-label">Select Table Name:</label>
+              <label for="tableName" class="col-form-label"><strong>Select Table Name:</strong></label>
             </div>
-            <div class="col-2">
+            <div class="col-auto">
                 <select class="form-select" aria-label="Default select example"  name="tableName"  required>
                     <option value="" selected disabled>Select Table</option>
                     <% for(var i=0; i< data.length; i++){ %>
@@ -40,150 +40,150 @@
                   </select>
             </div>
            <div class="col-auto">
-            <button type="submit" class="btn btn-outline-success">Show table</button>
+            <button type="submit" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-right"></i></button>
            </div>
         </div>   
     
 
     </form>
 
-    <% if(typeof tables !='undefined' && tables.length !==0){ %>
-        <div class="card w-75 mt-3 py-1 mx-auto border border-primary">
-            <div class="card-body">
-                <div class="d-flex justify-content-center">
-                    <form action="/view" method="POST">
-                        <input type="hidden" name="tableName" value="<%= tablename %>" />
-                        <div class="row">
-                            <div class="col-auto">
-                               <select class="form-select" aria-label="Default select example"  name="column"  onchange="this.form.submit()" required>
-                                   <option selected disabled>Select column for filtering</option>
-                                <% for(var i=0; i< column.length; i++){ %>
-                                   <% if(typeof selectedCol != undefined && selectedCol == column[i]){ %>
-                                     <option value="<%= column[i] %>" selected><%= column[i] %></option>
-                                   <% } else { %>
-                                     <option value="<%= column[i] %>"><%= column[i] %></option>   
-                                    <% } %>
-                                    <% } %>
-                               </select>
-                            </div>
-                            <% if(typeof datatype != 'undefined') { %>
-                             <div class="col-auto">
-                                <% if(datatype === 'text'){ %>
-                                    <select name="filter" id="filter" class="col form-select mx-2">
+    <% if(typeof tables !='undefined' && tables.length !==0){ %>        
+        <div class="d-flex justify-content-center">
+            <form action="/view" method="POST" class="form-for-create container px-0">
+                <input type="hidden" name="tableName" value="<%= tablename %>" />
+
+                
+                <div class="d-flex flex-column flex-xl-row  justify-content-center p-5">
+                    <div class="p-2">
+                        <select class="form-select" aria-label="Default select example"  name="column"  onchange="this.form.submit()" required>
+                            <option selected disabled>Select column for filtering</option>
+                        <% for(var i=0; i< column.length; i++){ %>
+                            <% if(typeof selectedCol != undefined && selectedCol == column[i]){ %>
+                                <option value="<%= column[i] %>" selected><%= column[i] %></option>
+                            <% } else { %>
+                                <option value="<%= column[i] %>"><%= column[i] %></option>   
+                            <% } %>
+                            <% } %>
+                        </select>
+                    </div>
+                    <% if(typeof datatype != 'undefined') { %>
+                        <div class="p-2">
+                        <% if(datatype === 'text'){ %>
+                            <select name="filter" id="filter" class="col form-select">
+                        
+                                <option value="=s">Is Equal</option>
+                                <option value="!=s">Is Not Equal</option>
+                                <option value="LIKE s">Starts with</option>
+                                <option value="LIKE e">Ends with</option>
+                                <option value="LIKE c">Contains</option>
+                                <option value="NOT LIKE c">Does Not Contains</option>
+                                <option value="IS NULL">NULL</option>
+                                <option value="IS NOT NULL">Not NULL</option>
+                            
+                                </select>
+
+                        <% } else if(datatype === 'int') { %>
+                            <select name="filter" id="filter" class="col form-select">
+                        
+                                <option value=">">Greater than</option>
+                                <option value="<">Less than</option>
+                                <option value="=">Is Equal</option>
+                                <option value="!=">Is Not Equal</option>
+                                <option value="IS NULL">NULL</option>
+                                <option value="IS NOT NULL">Not NULL</option>
                                 
-                                        <option value="=s">Is Equal</option>
-                                        <option value="!=s">Is Not Equal</option>
-                                        <option value="LIKE s">Starts with</option>
-                                        <option value="LIKE e">Ends with</option>
-                                        <option value="LIKE c">Contains</option>
-                                        <option value="NOT LIKE c">Does Not Contains</option>
-                                        <option value="IS NULL">NULL</option>
-                                        <option value="IS NOT NULL">Not NULL</option>
-                                    
-                                     </select>
-        
-                                <% } else if(datatype === 'int') { %>
-                                    <select name="filter" id="filter" class="col form-select mx-2">
+                            </select>  
+                        <% } else if(datatype === 'tinyint') { %> 
+                            <select name="filter" id="filter" class="col form-select">
+                        
+                                <option value="">Select</option>
+                                <option value="TRUE">TRUE</option>
+                                <option value="FALSE">FALSE</option>
                                 
-                                        <option value=">">Greater than</option>
-                                        <option value="<">Less than</option>
-                                        <option value="=">Is Equal</option>
-                                        <option value="!=">Is Not Equal</option>
-                                        <option value="IS NULL">NULL</option>
-                                        <option value="IS NOT NULL">Not NULL</option>
-                                        
-                                    </select>  
-                                <% } else if(datatype === 'tinyint') { %> 
-                                    <select name="filter" id="filter" class="col form-select mx-2">
+                            </select>
+                        <% } else if(datatype === 'varchar') { %> 
+                            <select name="filter" id="filter" class="col form-select">
+                        
+                                <option value="=s">Is Equal</option>
+                                <option value="!=s">Is Not Equal</option>
+                                <option value="LIKE s">Starts with</option>
+                                <option value="LIKE e">Ends with</option>
+                                <option value="LIKE c">Contains</option>
+                                <option value="NOT LIKE c">Does Not Contains</option>
+                                <option value="IS NULL">NULL</option>
+                                <option value="IS NOT NULL">Not NULL</option>
                                 
-                                        <option value="">Select</option>
-                                        <option value="TRUE">TRUE</option>
-                                        <option value="FALSE">FALSE</option>
-                                        
-                                    </select>
-                                <% } else if(datatype === 'varchar') { %> 
-                                    <select name="filter" id="filter" class="col form-select mx-2">
+                            </select>
+                        <% } else if(datatype === 'datetime') { %> 
+                            <select name="filter" id="date-filter" class="col form-select">
+                        
+                                <option value="MORE THAN N DAYS AGO">More Than N Days Ago</option>
+                                <option value="EXACTLY THAN N DAYS AGO">Exactly Than N Days Ago</option>
+                                <option value="LESS THAN N DAYS AGO">Less Than N Days Ago</option>
+                                <option value="<s">Before</option>
+                                <option value="=s">ON</option>
+                                <option value=">s">After</option>
+                                <option value="IS NULL">NULL</option>
+                                <option value="IS NOT NULL">Not NULL</option>
                                 
-                                        <option value="=s">Is Equal</option>
-                                        <option value="!=s">Is Not Equal</option>
-                                        <option value="LIKE s">Starts with</option>
-                                        <option value="LIKE e">Ends with</option>
-                                        <option value="LIKE c">Contains</option>
-                                        <option value="NOT LIKE c">Does Not Contains</option>
-                                        <option value="IS NULL">NULL</option>
-                                        <option value="IS NOT NULL">Not NULL</option>
-                                        
-                                    </select>
-                                <% } else if(datatype === 'datetime') { %> 
-                                    <select name="filter" id="date-filter" class="col form-select mx-2">
-                                
-                                        <option value="MORE THAN N DAYS AGO">More Than N Days Ago</option>
-                                        <option value="EXACTLY THAN N DAYS AGO">Exactly Than N Days Ago</option>
-                                        <option value="LESS THAN N DAYS AGO">Less Than N Days Ago</option>
-                                        <option value="<s">Before</option>
-                                        <option value="=s">ON</option>
-                                        <option value=">s">After</option>
-                                        <option value="IS NULL">NULL</option>
-                                        <option value="IS NOT NULL">Not NULL</option>
-                                        
-                                    </select>  
-                                <% } %>
-                             </div>  
-                             <% } %>
-                             <% if(typeof datatype != 'undefined') { %>
-                                <div class="col-auto" id=input-div>
-                                   <% if(datatype === 'varchar'){ %>
-                                            <input type="text" name="value" id="column_name" class="form-control col" >  
-                                   <% } else if(datatype === 'int') { %> 
-                                            <input type="number" name="value" id="column_name" class="form-control col" >
-                                   <% } else if(datatype === 'text') { %> 
-                                            <input type="text" name="value" id="column_name" class="form-control col" >
-                                   <% } else if(datatype === 'datetime') { %> 
-                                        <input id="column_name" type="number" min="0" step="1" name="value" class="form-control col" >
-                                   <% } %>
-                                </div>  
-                                
-                             <div class="col-auto">
-                                    <button class="btn btn-outline-dark col-auto mx-2" name="filter_data" onclick="document.getElementById('column_name').setAttribute('required','required')"><i class="fa fa-filter" ></i></button>
-                                    <!--Reset filter (Inprogress)-->
-                                    <button class="btn btn-outline-dark col-auto" name="refresh"><i class="fa fa-refresh"></i></button>
-                             </div> 
-                             <% } %> 
-                        </div>
-                    </form>
+                            </select>  
+                        <% } %>
+                        </div>  
+                        <% } %>
+                        <% if(typeof datatype != 'undefined') { %>
+                        <div class="p-2" id=input-div>
+                            <% if(datatype === 'varchar'){ %>
+                                    <input type="text" name="value" id="column_name" class="form-control col" >  
+                            <% } else if(datatype === 'int') { %> 
+                                    <input type="number" name="value" id="column_name" class="form-control col" >
+                            <% } else if(datatype === 'text') { %> 
+                                    <input type="text" name="value" id="column_name" class="form-control col" >
+                            <% } else if(datatype === 'datetime') { %> 
+                                <input id="column_name" type="number" min="0" step="1" name="value" class="form-control col" >
+                            <% } %>
+                        </div>  
+                        
+                        <div class="p-2">
+                            <button class="btn btn-outline-dark col-auto me-2" name="filter_data" onclick="document.getElementById('column_name').setAttribute('required','required')"><i class="fa fa-filter" ></i></button>
+                            <!--Reset filter (Inprogress)-->
+                            <button class="btn btn-outline-dark col-auto" name="refresh"><i class="fa fa-refresh"></i></button>
+                        </div> 
+                        <% } %> 
                 </div>
-            </div>
+            </form>
         </div>
         
         <% } %> 
 
 
-     <div class="container w-75 my-3 px-md-5 py-5 text-center">
+     <div class="container my-3 px-md-5 py-5 text-center">
         <% if(typeof tables !='undefined' && tables.length !== 0 ){ %>
-        <table class="table bg-white" style="margin-bottom: 40vh;">
-          <thead class="table-dark">
-            <tr>
-            <% for(var i=0; i< column.length; i++){ %>
-              <th scope="col"><%= column[i] %></th>
-            <% } %>
-            </tr>
-          </thead>
-          <tbody>
-            <% tables.forEach(function(table){ %>
+        <div class="overflow-auto">
+            <table class="table bg-white" style="margin-bottom: 40vh; ">
+            <thead class="table-dark">
                 <tr>
-                    <% for(let key in table){ %>
-                        <td>
-                            <%if( table[key] instanceof Date) {%>
-                                <%= table[key].toLocaleString('en-US')%>
-                            <%} else{ %>
-                                <%= table[key] %>
-                            <% } %>
-                        </td>
-                    <% } %>
+                <% for(var i=0; i< column.length; i++){ %>
+                <th scope="col"><%= column[i] %></th>
+                <% } %>
                 </tr>
-             <% }) %> 
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+                <% tables.forEach(function(table){ %>
+                    <tr>
+                        <% for(let key in table){ %>
+                            <td>
+                                <%if( table[key] instanceof Date) {%>
+                                    <%= table[key].toLocaleString('en-US')%>
+                                <%} else{ %>
+                                    <%= table[key] %>
+                                <% } %>
+                            </td>
+                        <% } %>
+                    </tr>
+                <% }) %> 
+            </tbody>
+            </table>
+        </div>
         <% } else { %>
                 <h2 class="text-dark" style="margin-bottom: 40vh;">No data available</h2>
           <% } %>

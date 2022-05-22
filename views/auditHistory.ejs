@@ -13,7 +13,7 @@
 
   
   <% if(typeof data !='undefined' ){ %>
-    <div class="container w-75 my-5 px-md-5 py-5 text-center" style="min-height: 80vh;">
+    <div class="container my-5 px-md-5 py-5 text-center" style="min-height: 80vh;">
       <h3>History</h3>
       <hr>
       <br>
@@ -27,8 +27,8 @@
         <tbody>
           <% for(var i=0; i< data.length; i++){ %>
             <tr>
-              <td> <strong><%= data[i].history %></strong> </td>
-              <td>
+              <td class="text-start ps-3"> <strong><%= data[i].history %></strong> </td>
+              <td class="text-start ps-2">
                 <strong>Date:</strong> <%= data[i].time.getDate() %>/<%= data[i].time.getMonth()+1 %>/<%= data[i].time.getFullYear() %> 
                 <br>
                 <strong>Time:</strong> <%= data[i].time.getHours() %>:<%= data[i].time.getMinutes()+1 %>:<%= data[i].time.getSeconds() %>
