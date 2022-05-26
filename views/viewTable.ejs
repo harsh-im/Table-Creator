@@ -43,15 +43,54 @@
             <button type="submit" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-right"></i></button>
            </div>
         </div>   
-    
-
     </form>
 
     <% if(typeof tables !='undefined' && tables.length !==0){ %>        
         <div class="d-flex justify-content-center">
-            <form action="/view" method="POST" class="form-for-create container px-0">
-                <input type="hidden" name="tableName" value="<%= tablename %>" />
+            <form action="/view" method="POST" class="form-for-create container px-0" id="filter-form">
+                <button type="button" class="btn btn-primary px-5" style="border-bottom-left-radius: 3rem; border-bottom-right-radius: 3rem;" data-bs-toggle="modal" data-bs-target="#saved-filter"  onclick="getSavedFilterType()">Saved Filter</button>
+                <!---------modal----------->
+                <div class="modal fade" id="saved-filter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Saved Filters</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="applySavedFilter" id="applySavedFilter">
+                            <input type="hidden" name="btn" id="btn">
+                            <ul class="list-group">
+                                <% if(typeof savedFilters != 'undefined' && savedFilters.length !==0 ){ %>  
+                                    <% for(var i=0; i< savedFilters.length; i++){ %>
+                                        <li class="list-group-item list-group-item-action text-start">
+                                            <%= savedFilters[i].filterName%>
+                                            <div class="float-end">
+                                                <button type="button" class="btn btn-success" onclick="applyFilter(this)">Apply</button>
+                                                <button type="button" class="btn btn-danger" onclick="applyFilter(this)"><i class="fa-solid fa-circle-minus"></i></button>
+                                            </div>
+                                            <br>
+                                            <div>
+                                                <span class="bg-light rounded saved-filter-box">Column Name: <%= savedFilters[i].columnName%> </span>
+                                                <span class="bg-light rounded savedFilterType saved-filter-box"><%= savedFilters[i].filterType %></span>
+                                                <% if(savedFilters[i].filterValue != 'undefined') { %>
+                                                    <span class="bg-light rounded saved-filter-box">Value:  <%= savedFilters[i].filterValue%> </span>
+                                                <% } %>
+                                            </div>
+                                        </li>
+                                    <%} %>
+                                <% } %>  
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
+
+                <input type="hidden" name="tableName" value="<%= tablename %>" />
                 
                 <div class="d-flex flex-column flex-xl-row  justify-content-center p-5">
                     <div class="p-2">
@@ -94,9 +133,9 @@
                                 
                             </select>  
                         <% } else if(datatype === 'tinyint') { %> 
-                            <select name="filter" id="filter" class="col form-select">
+                            <select name="filter" id="filter" class="col form-select" required>
                         
-                                <option value="">Select</option>
+                                <option value="" selected>Select</option>
                                 <option value="TRUE">TRUE</option>
                                 <option value="FALSE">FALSE</option>
                                 
@@ -121,7 +160,7 @@
                                 <option value="EXACTLY THAN N DAYS AGO">Exactly Than N Days Ago</option>
                                 <option value="LESS THAN N DAYS AGO">Less Than N Days Ago</option>
                                 <option value="<s">Before</option>
-                                <option value="=s">ON</option>
+                                <option value="==s">ON</option>
                                 <option value=">s">After</option>
                                 <option value="IS NULL">NULL</option>
                                 <option value="IS NOT NULL">Not NULL</option>
@@ -142,11 +181,12 @@
                                 <input id="column_name" type="number" min="0" step="1" name="value" class="form-control col" >
                             <% } %>
                         </div>  
-                        
+                        <input type="hidden" name="saveFilterName" id="save-filter-name" />
                         <div class="p-2">
                             <button class="btn btn-outline-dark col-auto me-2" name="filter_data" onclick="document.getElementById('column_name').setAttribute('required','required')"><i class="fa fa-filter" ></i></button>
                             <!--Reset filter (Inprogress)-->
-                            <button class="btn btn-outline-dark col-auto" name="refresh"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-outline-dark col-auto me-2" name="refresh"><i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-outline-dark col-auto" name="btn" value="save-filter" type="button" onclick="promptMe()"><i class="fa-solid fa-bookmark"></i></button>
                         </div> 
                         <% } %> 
                 </div>
@@ -174,6 +214,8 @@
                             <td>
                                 <%if( table[key] instanceof Date) {%>
                                     <%= table[key].toLocaleString('en-US')%>
+                                <%} else if( !table[key] && table[key] != 0) {%>
+                                    -
                                 <%} else{ %>
                                     <%= table[key] %>
                                 <% } %>

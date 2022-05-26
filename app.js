@@ -47,6 +47,12 @@ db.query(`CREATE TABLE IF NOT EXISTS history  (sno INT AUTO_INCREMENT PRIMARY KE
     console.log("audit history Table created");
 });
 
+//filter table creation
+db.query(`CREATE TABLE IF NOT EXISTS filter  (sno INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(30) Not NULL, tableName VARCHAR(100) NOT NULL,  filterName VARCHAR(100) NOT NULL, columnName VARCHAR(100) NOT NULL, filterType VARCHAR(20) NOT NULL, filterValue VARCHAR(100) NOT NULL);`, function (err, result) {
+    if (err)  throw err;
+    console.log("filter Table created");
+});
+
 //routing
 app.get('/', function (req, res) {
     res.render('index');

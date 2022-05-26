@@ -1,4 +1,3 @@
-"use strict"
 /*------------for navbar--------------------*/
 $(function() {
     $(".navbar li a").click(function() {
@@ -119,3 +118,82 @@ $(document).ready(function(){
 $('#for-date-col').dateptimepicker({
    format: 'YYYY/MM/DD HH:mm:ss'
 })
+
+/*---------------view data--------------------*/
+function promptMe(){
+   if($('#filter').val().length == 0 || ($('#filter').val().length == 0 && $("#column_name").val().length == 0) ){
+      alert('Please enter the value!');
+   }
+   else{
+      var filterName = prompt("Enter filter name: ");
+      if(filterName != null){
+         $('#save-filter-name').val(filterName)
+         $('#filter-form').submit()
+      }
+   } 
+}
+
+function applyFilter(currElement){
+   console.log($(currElement).parent().parent().text())
+   let content = $(currElement).parent().parent().clone().children().remove().end().text()
+   content = content.replace(/(\r\n|\n|\r)/gm, "").trim();
+
+   btn = $(currElement).text()
+   btn = btn.replace(/(\r\n|\n|\r)/gm, "").trim();
+
+   if(btn == 'Apply'){
+      $('#btn').val('Apply')
+   }
+   else{
+      $('#btn').val('Delete')
+   }
+
+   $('#applySavedFilter').val(content);
+   $('#filter-form').submit();
+}
+
+function getSavedFilterType() {
+   $('.savedFilterType').each(function(){
+      console.log($(this))
+      let filter = $(this).text();
+      console.log(filter)
+   
+      if (filter === "=s" || filter === "=") {
+         $(this).text('Filter Name: Is Equal');
+       } else if (filter === "!=" || filter === "!=s") {
+         $(this).text('Filter Name: Is Not Equal');
+       } else if (filter === "LIKE s") {
+         $(this).text('Filter Name: Starts with');
+       }else if (filter === "LIKE e") {
+         $(this).text('Filter Name: Ends with');
+       } else if (filter === "LIKE c") {
+         $(this).text('Filter Name: Contains');
+       } else if (filter === "NOT LIKE c") {
+         $(this).text('Filter Name: Does Not Contains');
+       } else if (filter === "IS NULL") {
+         $(this).text('Filter Name: NULL');
+       } else if (filter === "IS NOT NULL") {
+         $(this).text('Filter Name: Not NULL');
+       } else if (filter === ">") {
+         $(this).text('Filter Name: Greater than');
+       } else if (filter === "<") {
+         $(this).text('Filter Name: Less than');
+       } else if (filter === ">s") {
+         $(this).text('Filter Name: After');
+       } else if (filter === "<s") {
+         $(this).text('Filter Name: Before');
+       } else if (filter === "==s") {
+         $(this).text('Filter Name: On');
+       }else if (filter === "TRUE") {
+         $(this).text('Filter Name: True');
+       } else if (filter === "FALSE") {
+         $(this).text('Filter Name: False');
+       }else if (filter === "MORE THAN N DAYS AGO") {
+         $(this).text('Filter Name: More Than N Days Ago');
+       }else if (filter === "EXACTLY THAN N DAYS AGO") {
+         $(this).text('Filter Name: Exactly Than N Days Ago');
+       }else if (filter === "LESS THAN N DAYS AGO") {
+         $(this).text('Filter Name: Less Than N Days Ago');
+       }
+      })
+}
