@@ -1,5 +1,6 @@
 const router =  require("express").Router();
 const db = require("../configs/DBconnection");
+const {requiresAuth} = require('express-openid-connect');
 
 
 const getQuery= (tableData)=>{
@@ -26,11 +27,11 @@ const getQuery= (tableData)=>{
 }
 
 
-router.get("/create", async(req, res)=>{
+router.get("/create", requiresAuth(), async(req, res)=>{
     res.render('createtable');
 })
 
-router.post("/create", async(req, res)=>{
+router.post("/create", requiresAuth(), async(req, res)=>{
    
     sqlQuery = getQuery(req.body)
     db.query(sqlQuery, function (err, result) {

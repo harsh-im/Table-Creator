@@ -15,6 +15,7 @@ const showDataRoutes = require('./routers/showData');
 //middlewares
 app.set('view engine', 'ejs');
 
+
 //initialize app
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
@@ -28,11 +29,6 @@ app.use(express.static(static_path));
 db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-});
-//user table creation
-db.query(`CREATE TABLE IF NOT EXISTS users (name VARCHAR(30) NOT NULL, email VARCHAR(30) PRIMARY KEY, password VARCHAR(225) NOT NULL);`, function (err, result) {
-    if (err) throw err;
-    console.log("user Table created");
 });
 
 //table info table creation
@@ -53,10 +49,6 @@ db.query(`CREATE TABLE IF NOT EXISTS filter  (sno INT AUTO_INCREMENT PRIMARY KEY
     console.log("filter Table created");
 });
 
-//routing
-app.get('/', function (req, res) {
-    res.render('index');
-})
 
 //routers
 app.use("/", formRoutes);
@@ -64,13 +56,13 @@ app.use("/", createtableRoutes);
 app.use("/", auditHistoryRoutes);
 app.use("/", deletetableRoutes);
 app.use("/", edittableRoutes);
-app.use("/",showDataRoutes);
+app.use("/", showDataRoutes);
 
 app.use((req, res) => {
-    res.status(400).render('error');
+    res.status(400).render('error'); 
   });
-  
+    
 
 //port
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 app.listen(port, ()=>{ console.log(`listening at port: ${port}`); })

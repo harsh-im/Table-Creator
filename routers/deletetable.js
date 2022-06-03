@@ -1,5 +1,7 @@
 const router =  require("express").Router();
 const db = require("../configs/DBconnection");
+const {requiresAuth} = require('express-openid-connect');
+
 
 const getTables = async(email, processResult) => {
     db.query(`SELECT tableName FROM tableInfo WHERE email = "${email}";`, function (err, result) {
@@ -9,13 +11,13 @@ const getTables = async(email, processResult) => {
     });	
 }
 
-router.get("/delete", async(req, res)=>{
-    getTables(req.session.user.email, (result)=>{
+router.get("/delete", requiresAuth(), async(req, res)=>{
+    getTables(req.oidc.user.email, (result)=>{
         res.render('deletetable', {data: result});
     })
 })
 
-router.post("/delete", async(req, res)=>{
+router.post("/delete", requiresAuth(), async(req, res)=>{
     
     db.query(`DROP TABLE ${req.body.table};`, function (err, result) {
         if (err) 
@@ -27,10 +29,10 @@ router.post("/delete", async(req, res)=>{
                     return res.render('deletetable', {msg: err, color: "alert-danger"} );
             });	
             
-            db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "'${req.body.table}' table is deleted", NOW());`,
+            db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "'${req.body.table}' table is deleted", NOW());`,
             function (err, result) {})
 
-            getTables(req.session.user.email, (result)=>{
+            getTables(req.oidc.user.email, (result)=>{
                 return res.render('deletetable', {data: result, msg: "Table successfully deleted.", color: "alert-success"} );
             })
         }

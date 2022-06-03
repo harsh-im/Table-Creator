@@ -1,5 +1,6 @@
 const router =  require("express").Router();
 const db = require("../configs/DBconnection");
+const {requiresAuth} = require('express-openid-connect');
 
 
 const getStrings = (body, colData)=> {
@@ -38,26 +39,26 @@ const getTables = async(email, processResult) => {
 
 
 
-router.get("/edit", async(req, res)=>{
+router.get("/edit", requiresAuth(), async(req, res)=>{
     res.render('edittable');
 })
 
 
-router.get("/insertdata", async(req, res)=>{
-    getTables(req.session.user.email, (allTables)=>{
+router.get("/insertdata", requiresAuth(), async(req, res)=>{
+    getTables(req.oidc.user.email, (allTables)=>{
         res.render('insertData', {tableNames: allTables} );
     })	    
 })
 
 
 
-router.post("/insertdata", async(req, res)=>{
+router.post("/insertdata", requiresAuth(), async(req, res)=>{
     db.query(`SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, colData) {
         if (err) console.log(err);
         
         db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
 
-            getTables(req.session.user.email, (allTables)=>{
+            getTables(req.oidc.user.email, (allTables)=>{
                 let {col, val, empty} = getStrings(req.body, colData);
                     
                     if(empty!==''){
@@ -66,7 +67,7 @@ router.post("/insertdata", async(req, res)=>{
                             if (err) 
                                 return res.render('insertData',{data:colData, key_col:keyData[0].Column_name, tableNames:allTables, selected_table:req.body.table, intertedData: intertedData, msg: err, color:'alert-danger'});
                             
-                                db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "A row is inserted in '${req.body.table}' table", NOW());`,
+                                db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "A row is inserted in '${req.body.table}' table", NOW());`,
                                     function (err, result) {})
 
                             res.render('insertData',{data:colData, key_col:keyData[0].Column_name, tableNames:allTables, selected_table:req.body.table, intertedData: intertedData, msg: 'Row inserted successfully!', color:'alert-success'});
@@ -81,14 +82,14 @@ router.post("/insertdata", async(req, res)=>{
     })
 
 
-router.get("/deletedata", async(req, res)=>{
-    getTables(req.session.user.email, (allTables)=>{
+router.get("/deletedata", requiresAuth(), async(req, res)=>{
+    getTables(req.oidc.user.email, (allTables)=>{
         res.render('deleteData', {tableNames: allTables} );
     })	    
 })
 
-router.post("/deletedata", async(req, res)=>{
-    getTables(req.session.user.email, (allTables)=>{
+router.post("/deletedata", requiresAuth(), async(req, res)=>{
+    getTables(req.oidc.user.email, (allTables)=>{
         db.query(`SELECT * FROM ${req.body.table};`, function (err, data) {
             db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
                 
@@ -99,7 +100,7 @@ router.post("/deletedata", async(req, res)=>{
                         console.log(req.body)
                         db.query(`DELETE FROM ${req.body.table} WHERE ${keyData[0].Column_name} = "${req.body.delete}";`, function (err, d) {
 
-                            db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "A row is deleted in '${req.body.table}' table", NOW());`,
+                            db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "A row is deleted in '${req.body.table}' table", NOW());`,
                                 function (err, result) {})
                             
                             db.query(`SELECT * FROM ${req.body.table};`, function (err, data2){

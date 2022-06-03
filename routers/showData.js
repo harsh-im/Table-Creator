@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const db = require("../configs/DBconnection");
+const {requiresAuth} = require('express-openid-connect');
+
 
 // Function to form query according to filter selected
 const getQuery = (table, column, filter, value) => {
@@ -69,18 +71,18 @@ const showTable = async (query, table, res, processResult) => {
   });
 };
 
-router.get("/view", async (req, res) => {
-  getTables(req.session.user.email, res, (rs) => {
+router.get("/view", requiresAuth(), async (req, res) => {
+  getTables(req.oidc.user.email, res, (rs) => {
     res.render("viewTable", { data: rs });
   });
 });
 
-router.post("/view", async (req, res) => {
+router.post("/view", requiresAuth(), async (req, res) => {
   console.log(req.body)
   let data = { ...req.body };
 
   if(typeof data.saveFilterName !== 'undefined' && data.saveFilterName !=''){
-    db.query(`INSERT INTO filter (email, tableName, filterName, columnName, filterType, filterValue) VALUEs('${req.session.user.email}', '${data.tableName}', '${data.saveFilterName}',' ${data.column}', '${data.filter}', '${data.value}')`, (err, result)=>{
+    db.query(`INSERT INTO filter (email, tableName, filterName, columnName, filterType, filterValue) VALUEs('${req.oidc.user.email}', '${data.tableName}', '${data.saveFilterName}',' ${data.column}', '${data.filter}', '${data.value}')`, (err, result)=>{
       if(err) console.log(err)
     })
   }
@@ -108,12 +110,12 @@ router.post("/view", async (req, res) => {
     let query = `SELECT * FROM ${data.tableName}`;
     if(typeof data.applySavedFilter != 'undefined' && data.applySavedFilter != ''){
       if(data.btn === 'Apply'){
-        db.query(`SELECT * FROM filter WHERE email='${req.session.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
+        db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
           query = getQuery(data.tableName, result[0].columnName, result[0].filterType, result[0].filterValue)
         })
       }
       else{
-        db.query(`DELETE FROM filter WHERE email= '${req.session.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
+        db.query(`DELETE FROM filter WHERE email= '${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
         })
       }
     }
@@ -122,11 +124,11 @@ router.post("/view", async (req, res) => {
     }
 
     let allSavedFilters;
-    db.query(`SELECT * FROM filter WHERE email='${req.session.user.email}' AND tableName='${data.tableName}';`, (err, result)=>{
+    db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName='${data.tableName}';`, (err, result)=>{
       allSavedFilters = result;      
     })
 
-    getTables(req.session.user.email, res, (rs) => {
+    getTables(req.oidc.user.email, res, (rs) => {
       showTable(query, data.tableName, res, (table, col, tableData) => {
         res.render("viewTable", {
           data: rs,
@@ -141,7 +143,7 @@ router.post("/view", async (req, res) => {
     });
   } else {
     const query = `SELECT * FROM ${data.tableName}`;
-    getTables(req.session.user.email, res, (rs) => {
+    getTables(req.oidc.user.email, res, (rs) => {
       showTable(query, data.tableName, res, (table, col, tableData) => {
         res.render("viewTable", {
           data: rs,
