@@ -38,8 +38,8 @@ router.post("/create", requiresAuth(), async(req, res)=>{
         if (err) 
             return res.render('createtable', {msg: err, color: "alert-danger"} );
             
-        db.query(`INSERT INTO history(email, history, time) VALUES("${req.session.user.email}", "'${req.body.tableName}' table is created", NOW());
-                INSERT INTO tableInfo (email, tableName) VALUES("${req.session.user.email}", "${req.body.tableName}");`,
+        db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "'${req.body.tableName}' table is created", NOW());
+                INSERT INTO tableInfo (email, tableName) VALUES("${req.oidc.user.email}", "${req.body.tableName}");`,
             function (err, result) {})
 
         res.render('createtable', {data: req.body, msg: `Table '${req.body.tableName}' successfully created`, color: "alert-success"} );
