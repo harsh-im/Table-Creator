@@ -25,7 +25,7 @@ const static_path= path.join(__dirname, "public");
 app.use(express.static(static_path));
 
 
-//db connection
+//db connection - check
 db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -64,5 +64,5 @@ app.use((req, res) => {
     
 
 //port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3306;
 app.listen(port, ()=>{ console.log(`listening at port: ${port}`); })
