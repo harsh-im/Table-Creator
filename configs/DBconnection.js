@@ -4,7 +4,7 @@ const db = mysql.createConnection({
     host: 'tablecreator.clet4bsaer2r.us-east-2.rds.amazonaws.com',
     user: 'root',
     database: 'tablecreator',
-    password:'rootuser',
+    password:process.env.password,
     multipleStatements: true
 });
 
