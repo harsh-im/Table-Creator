@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 
 // for dashboard
 router.get("/dashboard", requiresAuth(), (req, res)=>{
-  res.render('dashboard');
+  res.render('dashboard',{user: req.oidc.user});
 })
 
 
