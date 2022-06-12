@@ -1,9 +1,9 @@
 const mysql = require('mysql2')
 
 const db = mysql.createConnection({
-    host: 'tablecreator.clet4bsaer2r.us-east-2.rds.amazonaws.com',
-    user: 'root',
-    database: 'tablecreator',
+    host: process.env.hostname,
+    user: process.env.user,
+    database:process.env.database,
     password:process.env.password,
     multipleStatements: true
 });
