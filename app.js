@@ -25,7 +25,7 @@ const static_path= path.join(__dirname, "public");
 app.use(express.static(static_path));
 
 
-//db connection
+//db connection - check
 db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
