@@ -97,8 +97,8 @@ router.post("/view", requiresAuth(), async (req, res) => {
         function (err, dataType) {
           if (err) res.render("dashboard");
           dataType.forEach((row) => {
-            if (row.column_name === data.column) {
-              dt = row.data_type;
+            if (row.COLUMN_NAME === data.column) {
+              dt = row.DATA_TYPE;
               return;
             }
           });
