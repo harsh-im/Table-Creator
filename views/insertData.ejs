@@ -49,64 +49,64 @@
               
               <% if(typeof data != 'undefined'){ %>
                 <% for(let i=0; i<data.length; i++){ %>
-                  <% if(data[i].data_type == "int") { %>
+                  <% if(data[i].DATA_TYPE == "int") { %>
                     <tr>
-                      <td><label for="for-number-col" class="col-form-label" ><%= data[i].column_name %> [Number] </label></td>
-                      <% if(data[i].column_name == key_col) { %>
+                      <td><label for="for-number-col" class="col-form-label" ><%= data[i].COLUMN_NAME %> [Number] </label></td>
+                      <% if(data[i].COLUMN_NAME == key_col) { %>
                         <td>
-                          <input type="number" id="for-number-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          <input type="number" id="for-number-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>" required>
                           *Primary Key
                         </td>
                       <% } else{%>
-                        <td><input type="number" id="for-number-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                        <td><input type="number" id="for-number-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>"></td>
                       <% } %>
                     </tr>
-                  <% } else if(data[i].data_type == "text"){ %>
+                  <% } else if(data[i].DATA_TYPE == "text"){ %>
                     <tr>
-                      <td><label for="for-text-col" class="col-form-label" ><%= data[i].column_name %> [Text] </label></td>
-                      <% if(data[i].column_name == key_col) {%>
+                      <td><label for="for-text-col" class="col-form-label" ><%= data[i].COLUMN_NAME %> [Text] </label></td>
+                      <% if(data[i].COLUMN_NAME == key_col) {%>
                         <td>
-                          <input type="text" id="for-text-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          <input type="text" id="for-text-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>" required>
                           *Primary Key
                         </td>
                       <% } else{%>
-                        <td><input type="text" id="for-text-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                        <td><input type="text" id="for-text-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>"></td>
                       <% } %>
                     </tr>
-                  <% } else if(data[i].data_type == "datetime"){ %>
+                  <% } else if(data[i].DATA_TYPE == "datetime"){ %>
                     <tr>
-                      <td><label for="for-date-col" class="col-form-label" ><%= data[i].column_name %> [DateTime]</label></td>
-                      <% if(data[i].column_name == key_col) {%>
+                      <td><label for="for-date-col" class="col-form-label" ><%= data[i].COLUMN_NAME %> [DateTime]</label></td>
+                      <% if(data[i].COLUMN_NAME == key_col) {%>
                         <td>
-                          <input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          <input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>" required>
                           *Primary Key
                         </td>
                       <% } else{%>
-                        <td><input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                        <td><input type="datetime-local" id="for-date-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>"></td>
                       <% } %>
                     </tr>
-                  <% } else if(data[i].data_type == "varchar"){ %>
+                  <% } else if(data[i].DATA_TYPE == "varchar"){ %>
                     <tr>
-                      <td><label for="for-email-col" class="col-form-label" ><%= data[i].column_name %> [Email] </label></td>
-                      <% if(data[i].column_name == key_col) {%>
+                      <td><label for="for-email-col" class="col-form-label" ><%= data[i].COLUMN_NAME %> [Email] </label></td>
+                      <% if(data[i].COLUMN_NAME == key_col) {%>
                         <td>
-                          <input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" required onchange="ValidateEmail(this)">
+                          <input type="email" id="for-email-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>" required onchange="ValidateEmail(this)">
                           *Primary Key
                         </td>
                       <% } else{%>
-                        <td><input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" onchange="ValidateEmail(this)"></td>
+                        <td><input type="email" id="for-email-col" class="form-control"  name="<%= data[i].COLUMN_NAME %>" onchange="ValidateEmail(this)"></td>
                       <% } %>
                     </tr>
-                  <% } else if(data[i].data_type == "tinyint"){ %>
+                  <% } else if(data[i].DATA_TYPE == "tinyint"){ %>
                     <tr>
-                      <td><label for="for-boolean" class="col-form-label" ><%= data[i].column_name %> [Boolean] </label></td>
+                      <td><label for="for-boolean" class="col-form-label" ><%= data[i].COLUMN_NAME %> [Boolean] </label></td>
                       <td>
-                        <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" required>
+                        <select class="form-select" aria-label="Default select example"  name="<%= data[i].COLUMN_NAME %>" required>
                           <option value="" disabled="disabled" selected="true">-- Select --</option>
                           <option value="1">True</option>
                           <option value="0">False</option>
                         </select>
-                        <% if(data[i].column_name == key_col) {%>
+                        <% if(data[i].COLUMN_NAME == key_col) {%>
                           *Primary Key
                         <% }%>
                       </td>
