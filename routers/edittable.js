@@ -8,17 +8,17 @@ const getStrings = (body, colData)=> {
     let data={...body};
     delete data.table;
     for(let i=0; i<colData.length && Object.keys(data).length>0; i++){
-        col += colData[i].column_name +",";
-        if(data[`${colData[i].column_name}`] ==''){
+        col += colData[i].COLUMN_NAME +",";
+        if(data[`${colData[i].COLUMN_NAME}`] ==''){
             val+= `NULL,`;
         }
-        else if(colData[i].data_type ==='int' || colData[i].data_type === 'tinyint'){
+        else if(colData[i].DATA_TYPE ==='int' || colData[i].DATA_TYPE === 'tinyint'){
             empty="NO"
-            val+= data[`${colData[i].column_name}`] + " ,";
+            val+= data[`${colData[i].COLUMN_NAME}`] + " ,";
         }
         else{
             empty="NO"
-            val += `'${data[`${colData[i].column_name}`]}' ,`;
+            val += `'${data[`${colData[i].COLUMN_NAME}`]}' ,`;
         }
     }
     col = col.substring(0, col.length -1);
@@ -59,8 +59,9 @@ router.get("/insertdata", requiresAuth(), async(req, res)=>{
 
 router.post("/insertdata", requiresAuth(), async(req, res)=>{
     try{
-        db.query(`SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, colData) {
+        db.query(`SELECT COLUMN_NAME, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${req.body.table}";`, function (err, colData) {
             if (err) console.log(err);
+            console.log(colData);
             
             db.query(`SHOW KEYS FROM ${req.body.table} WHERE key_name = "PRIMARY"`, function(err, keyData){
 
