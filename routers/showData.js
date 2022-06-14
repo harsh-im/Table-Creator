@@ -72,91 +72,101 @@ const showTable = async (query, table, res, processResult) => {
 };
 
 router.get("/view", requiresAuth(), async (req, res) => {
-  getTables(req.oidc.user.email, res, (rs) => {
-    res.render("viewTable", { data: rs });
-  });
+  try{
+    getTables(req.oidc.user.email, res, (rs) => {
+      res.render("viewTable", { data: rs });
+    });
+  }catch(err){
+    console.log(err.message);
+    res.status(500).send('internal server error ')
+}
 });
 
 router.post("/view", requiresAuth(), async (req, res) => {
-  console.log(req.body)
-  let data = { ...req.body };
+  try{
+    console.log(req.body)
+    let data = { ...req.body };
 
-  if(typeof data.saveFilterName !== 'undefined' && data.saveFilterName !=''){
-    db.query(`INSERT INTO filter (email, tableName, filterName, columnName, filterType, filterValue) VALUEs('${req.oidc.user.email}', '${data.tableName}', '${data.saveFilterName}',' ${data.column}', '${data.filter}', '${data.value}')`, (err, result)=>{
-      if(err) console.log(err)
-    })
-  }
+    if(typeof data.saveFilterName !== 'undefined' && data.saveFilterName !=''){
+      db.query(`INSERT INTO filter (email, tableName, filterName, columnName, filterType, filterValue) VALUEs('${req.oidc.user.email}', '${data.tableName}', '${data.saveFilterName}',' ${data.column}', '${data.filter}', '${data.value}')`, (err, result)=>{
+        if(err) console.log(err)
+      })
+    }
 
 
-  if (data.column !== undefined || data.applySavedFilter !='') {
-    let dt;
+    if (data.column !== undefined || data.applySavedFilter !='') {
+      let dt;
 
-    if (data.column !== undefined){
-      db.query(
-        `SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${data.tableName}";`,
-        function (err, dataType) {
-          if (err) res.render("dashboard");
-          dataType.forEach((row) => {
-            if (row.column_name === data.column) {
-              dt = row.data_type;
-              return;
-            }
-          });
+      if (data.column !== undefined){
+        db.query(
+          `SELECT column_name, data_type FROM information_schema.columns WHERE TABLE_SCHEMA = "tablecreator" AND TABLE_NAME = "${data.tableName}";`,
+          function (err, dataType) {
+            if (err) res.render("dashboard");
+            dataType.forEach((row) => {
+              if (row.column_name === data.column) {
+                dt = row.data_type;
+                return;
+              }
+            });
+          }
+        );
+      }
+      
+
+      let query = `SELECT * FROM ${data.tableName}`;
+      if(typeof data.applySavedFilter != 'undefined' && data.applySavedFilter != ''){
+        if(data.btn === 'Apply'){
+          db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
+            query = getQuery(data.tableName, result[0].columnName, result[0].filterType, result[0].filterValue)
+          })
         }
-      );
-    }
-    
-
-    let query = `SELECT * FROM ${data.tableName}`;
-    if(typeof data.applySavedFilter != 'undefined' && data.applySavedFilter != ''){
-      if(data.btn === 'Apply'){
-        db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
-          query = getQuery(data.tableName, result[0].columnName, result[0].filterType, result[0].filterValue)
-        })
+        else{
+          db.query(`DELETE FROM filter WHERE email= '${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
+          })
+        }
       }
-      else{
-        db.query(`DELETE FROM filter WHERE email= '${req.oidc.user.email}' AND tableName = '${data.tableName}' AND filterName = '${data.applySavedFilter}'`, (err, result)=>{
-        })
+      else if (data.filter != undefined && ((typeof data.value != "undefined" && data.value != "")||(data.filter =='TRUE' || data.filter == 'FALSE' || data.filter =='IS NULL' || data.filter == 'IS NOT NULL'))) {
+        query = getQuery(data.tableName, data.column, data.filter, data.value);
       }
-    }
-    else if (data.filter != undefined && ((typeof data.value != "undefined" && data.value != "")||(data.filter =='TRUE' || data.filter == 'FALSE' || data.filter =='IS NULL' || data.filter == 'IS NOT NULL'))) {
-      query = getQuery(data.tableName, data.column, data.filter, data.value);
-    }
 
-    let allSavedFilters;
-    db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName='${data.tableName}';`, (err, result)=>{
-      allSavedFilters = result;      
-    })
+      let allSavedFilters;
+      db.query(`SELECT * FROM filter WHERE email='${req.oidc.user.email}' AND tableName='${data.tableName}';`, (err, result)=>{
+        allSavedFilters = result;      
+      })
 
-    getTables(req.oidc.user.email, res, (rs) => {
-      showTable(query, data.tableName, res, (table, col, tableData) => {
-        res.render("viewTable", {
-          data: rs,
-          tables: tableData,
-          column: col,
-          tablename: table,
-          datatype: dt,
-          selectedCol: data.column,
-          savedFilters: allSavedFilters
+      getTables(req.oidc.user.email, res, (rs) => {
+        showTable(query, data.tableName, res, (table, col, tableData) => {
+          res.render("viewTable", {
+            data: rs,
+            tables: tableData,
+            column: col,
+            tablename: table,
+            datatype: dt,
+            selectedCol: data.column,
+            savedFilters: allSavedFilters
+          });
         });
       });
-    });
-  } else {
-    const query = `SELECT * FROM ${data.tableName}`;
-    getTables(req.oidc.user.email, res, (rs) => {
-      showTable(query, data.tableName, res, (table, col, tableData) => {
-        res.render("viewTable", {
-          data: rs,
-          tables: tableData,
-          column: col,
-          tablename: table,
-          datatype: undefined,
-          selectedCol: undefined,
-          savedFilters: allSavedFilters
+    } else {
+      const query = `SELECT * FROM ${data.tableName}`;
+      getTables(req.oidc.user.email, res, (rs) => {
+        showTable(query, data.tableName, res, (table, col, tableData) => {
+          res.render("viewTable", {
+            data: rs,
+            tables: tableData,
+            column: col,
+            tablename: table,
+            datatype: undefined,
+            selectedCol: undefined,
+            savedFilters: allSavedFilters
+          });
         });
       });
-    });
-  }
+    }
+  }catch(err){
+    console.log(err.message);
+    res.status(500).send('internal server error ')
+}
 });
 
 module.exports = router;

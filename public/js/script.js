@@ -121,7 +121,8 @@ $('#for-date-col').dateptimepicker({
 
 /*---------------view data--------------------*/
 function promptMe(){
-   if($('#filter').val().length == 0 || ($('#filter').val().length == 0 && $("#column_name").val().length == 0) ){
+   console.log($("#column_name").val())
+   if(($("#column_name").val() !== undefined && $("#column_name").val().length == 0) ){
       alert('Please enter the value!');
    }
    else{
@@ -197,3 +198,21 @@ function getSavedFilterType() {
        }
       })
 }
+
+function ValidateEmail(currElement) 
+{
+   const email = $(currElement).val();
+   console.log(email)
+   if (email!=='' && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+   {
+      if(!($(currElement).next().text().includes('Enter valid email'))){
+         $(currElement).parent().append('<div style="color:red; display:block; "id="warning"> Enter valid email</div>')
+      }
+      $("#insert-btn"). attr("disabled", true);
+   }
+   else{
+      $(currElement).next().remove("div")
+      $("#insert-btn"). attr("disabled", false);
+   }
+}
+

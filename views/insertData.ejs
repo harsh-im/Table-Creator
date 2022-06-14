@@ -90,34 +90,26 @@
                       <td><label for="for-email-col" class="col-form-label" ><%= data[i].column_name %> [Email] </label></td>
                       <% if(data[i].column_name == key_col) {%>
                         <td>
-                          <input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" required>
+                          <input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" required onchange="ValidateEmail(this)">
                           *Primary Key
                         </td>
                       <% } else{%>
-                        <td><input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>"></td>
+                        <td><input type="email" id="for-email-col" class="form-control"  name="<%= data[i].column_name %>" onchange="ValidateEmail(this)"></td>
                       <% } %>
                     </tr>
                   <% } else if(data[i].data_type == "tinyint"){ %>
                     <tr>
                       <td><label for="for-boolean" class="col-form-label" ><%= data[i].column_name %> [Boolean] </label></td>
-                      <% if(data[i].column_name == key_col) {%>
-                        <td>
-                          <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" required>
-                            <option value="" disabled="disabled" selected="true">-- Select --</option>
-                            <option value="1">True</option>
-                            <option value="0">False</option>
-                          </select>
+                      <td>
+                        <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" required>
+                          <option value="" disabled="disabled" selected="true">-- Select --</option>
+                          <option value="1">True</option>
+                          <option value="0">False</option>
+                        </select>
+                        <% if(data[i].column_name == key_col) {%>
                           *Primary Key
-                        </td>
-                      <% } else{%>
-                        <td>
-                          <select class="form-select" aria-label="Default select example"  name="<%= data[i].column_name %>" >
-                            <option value="" selected="true">-- Select --</option>
-                            <option value="1">True</option>
-                            <option value="0">False</option>
-                          </select>
-                        </td>
-                      <% } %>
+                        <% }%>
+                      </td>
                     </tr>
                   <% } %>
                 <% } %>

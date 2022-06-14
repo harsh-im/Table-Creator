@@ -27,23 +27,30 @@ const getQuery= (tableData)=>{
 }
 
 
+//create table routes
 router.get("/create", requiresAuth(), async(req, res)=>{
     res.render('createtable');
 })
 
+
 router.post("/create", requiresAuth(), async(req, res)=>{
    
-    sqlQuery = getQuery(req.body)
-    db.query(sqlQuery, function (err, result) {
-        if (err) 
-            return res.render('createtable', {msg: err, color: "alert-danger"} );
-            
-        db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "'${req.body.tableName}' table is created", NOW());
-                INSERT INTO tableInfo (email, tableName) VALUES("${req.oidc.user.email}", "${req.body.tableName}");`,
-            function (err, result) {})
+    try{
+        sqlQuery = getQuery(req.body)
+        db.query(sqlQuery, function (err, result) {
+            if (err) 
+                return res.render('createtable', {msg: err, color: "alert-danger"} );
+                
+            db.query(`INSERT INTO history(email, history, time) VALUES("${req.oidc.user.email}", "'${req.body.tableName}' table is created", NOW());
+                    INSERT INTO tableInfo (email, tableName) VALUES("${req.oidc.user.email}", "${req.body.tableName}");`,
+                function (err, result) {})
 
-        res.render('createtable', {data: req.body, msg: `Table '${req.body.tableName}' successfully created`, color: "alert-success"} );
-    });	
+            res.render('createtable', {data: req.body, msg: `Table '${req.body.tableName}' successfully created`, color: "alert-success"} );
+        });	
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('internal server error ')
+    }
 })
 
 module.exports = router;
